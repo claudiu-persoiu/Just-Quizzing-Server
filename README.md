@@ -2,20 +2,20 @@ Just quizzing - A very simple PHP quiz platform
 ===============================================
 
 Requirements
-============
+------------
 
 - PHP 5.1
 - SQLite3
 
 Installation
-============
+------------
 
 - Copy the files to the server public directory (usually www or htdocs);
 - Make sure the server have write permissions to db.info file and questions-img folder;
 - Run yourdomain/admin.php, with user "admin" and password "admin" (without quotes).
 
 Project URL
-===========
+-----------
 http://blog.claudiupersoiu.ro/
 
 DISCLAIMER
