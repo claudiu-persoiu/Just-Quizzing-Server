@@ -1,2 +1,2 @@
-Just-quizzing---Simple-PHP-Quiz-platform
+Just quizzing - Simple PHP Quiz platform
 ========================================
