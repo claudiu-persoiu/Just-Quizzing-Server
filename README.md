@@ -4,7 +4,7 @@ Just quizzing - A very simple PHP quiz platform
 Requirements
 ------------
 
-- PHP 5.1
+- PHP 5.1.2
 - SQLite3
 
 Installation
