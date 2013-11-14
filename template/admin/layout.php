@@ -34,7 +34,7 @@
 <div id="content">
     <?php
     $menu_selection = 'admin_questions';
-    include( 'includes' . DIRECTORY_SEPARATOR . 'menu.php'); ?>
+    include( 'template' . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'menu.php'); ?>
 
     <?php if ($_SESSION['message']) : ?>
         <div id="message"><?php echo $_SESSION['message']; unset($_SESSION['message']); ?></div>
