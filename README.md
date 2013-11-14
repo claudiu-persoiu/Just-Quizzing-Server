@@ -1,5 +1,6 @@
-Just quizzing - A very simple PHP quiz platform
+Just quizzing
 ===============================================
+A simple and manimalistic quiz platform created in PHP and SQLite
 
 Requirements
 ------------
