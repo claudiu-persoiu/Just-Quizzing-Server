@@ -21,6 +21,7 @@
  */
 
 ?>
+<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" onsubmit="return checkLeastAnswer();">
 <table class="question-form">
     <thead>
     <tr>
@@ -28,7 +29,6 @@
     </tr>
     </thead>
     <tbody>
-    <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" onsubmit="return checkLeastAnswer();">
         <tr>
             <td class="label" style="width: 120px;">Username</td>
             <td>
@@ -46,10 +46,10 @@
         <tr>
             <td colspan="2" style="text-align: right"><button class="submit"><?php echo $key ? "edit":"add"; ?> user</button></td>
         </tr>
-    </form>
     </tbody>
 </table>
-
+<input type="hidden" name="action" value="update">
+</form>
 
 <table class="question-form">
     <thead>
@@ -76,9 +76,9 @@
                 </div>
             </td>
             <td style="width: 90px;">
-                <a href="?edit=<?php echo $key; ?>" class="submit">edit</a>
+                <a href="?action=edit&key=<?php echo $key; ?>" class="submit">edit</a>
                 <?php if($_SESSION['authenticated_admin_id'] != $key) { ?>
-                    <a href="?del=<?php echo $key; ?>" class="cancel">delete</a>
+                    <a href="?action=del&key=<?php echo $key; ?>" class="cancel">delete</a>
                 <?php } ?>
             </td>
         </tr>

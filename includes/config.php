@@ -38,3 +38,9 @@ $result = $stmt->execute();
 while($row = $result->fetchArray(SQLITE3_ASSOC)) {
     define(strtoupper($row['config']), $row['value']);
 }
+
+function classAutoloader($class) {
+    require_once 'includes' . DIRECTORY_SEPARATOR . 'class' . DIRECTORY_SEPARATOR . $class . '.php';
+}
+
+spl_autoload_register('classAutoloader');

@@ -21,6 +21,7 @@
  */
 
 ?>
+<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 <table class="question-form">
     <thead>
     <tr>
@@ -28,7 +29,6 @@
     </tr>
     </thead>
     <tbody>
-    <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
         <tr>
             <td class="label" style="width: 200px;">Enable valid user restriction</td>
             <td>
@@ -41,10 +41,12 @@
         <tr>
             <td colspan="2" style="text-align: right"><button class="submit">Update</button></td>
         </tr>
-    </form>
     </tbody>
 </table>
+<input type="hidden" name="action" value="restriction">
+</form>
 
+<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 <table class="question-form">
     <thead>
     <tr>
@@ -73,7 +75,8 @@
     </form>
     </tbody>
 </table>
-
+<input type="hidden" name="action" value="update">
+</form>
 
 <table class="question-form">
     <thead>
@@ -100,8 +103,8 @@
                 </div>
             </td>
             <td style="width: 90px;">
-                <a href="?edit=<?php echo $key; ?>" class="submit">edit</a>
-                <a href="?del=<?php echo $key; ?>" class="cancel">delete</a>
+                <a href="?action=edit&key=<?php echo $key; ?>" class="submit">edit</a>
+                <a href="?action=del&key=<?php echo $key; ?>" class="cancel">delete</a>
             </td>
         </tr>
     <?php } ?>
