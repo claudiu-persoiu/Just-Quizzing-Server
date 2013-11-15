@@ -174,13 +174,8 @@
     </thead>
     <tbody>
     <?php
-
-    $stmt = $db->prepare('SELECT * FROM questions');
-
-    $result = $stmt->execute();
-
     $i = 0;
-    while($question = $result->fetchArray(SQLITE3_ASSOC)) {
+    foreach($this->getEntity()->getAll() as $question) {
 
         $data = json_decode($question['question']);
         $key = $question['id'];

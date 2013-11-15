@@ -85,12 +85,8 @@
     <tbody>
     <?php
 
-    $stmt = $db->prepare('SELECT id, name FROM users');
-
-    $result = $stmt->execute();
-
     $i = 0;
-    while($user = $result->fetchArray(SQLITE3_ASSOC)) {
+    foreach($this->getEntity()->getAll() as $user) {
         $key = $user['id'];
 
         $i++;

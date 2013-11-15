@@ -20,10 +20,23 @@
  *
  */
 
-function renderLayout($section) {
-    global $db;
+function encryptPass($raw) {
 
-    $contentFile = 'template' . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . $section . '.php';
+    $passHash = substr(md5(microtime()), 0, 5);
 
-    require_once('template' . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'layout.php');
+    return hashPass($raw, $passHash);
 }
+
+function hashPass($raw, $passHash) {
+    return md5($raw . ':' . $passHash) . ':' . $passHash;
+}
+
+function getSeed($pass) {
+    return substr($pass, strpos($pass, ':') + 1);
+}
+
+function classAutoloader($class) {
+    require_once 'includes' . DIRECTORY_SEPARATOR . 'class' . DIRECTORY_SEPARATOR . $class . '.php';
+}
+
+spl_autoload_register('classAutoloader');

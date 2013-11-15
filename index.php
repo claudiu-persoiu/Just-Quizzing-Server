@@ -24,13 +24,11 @@ require_once('includes' . DIRECTORY_SEPARATOR . 'config.php');
 
 require_once('includes' . DIRECTORY_SEPARATOR . 'authentication_frontend.php');
 
-$stmt = $db->prepare('SELECT * FROM questions');
-
-$result = $stmt->execute();
+$entityQuestions = DatabaseEntity::getEntity('questions');
 
 $json = array();
 
-while($question = $result->fetchArray(SQLITE3_ASSOC)) {
+foreach($entityQuestions->getAll() as $question) {
     $json['q' . $question['id']] = json_decode($question['question']);
 }
 

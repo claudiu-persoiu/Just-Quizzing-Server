@@ -58,12 +58,10 @@
     <tbody>
     <?php
 
-    $stmt = $db->prepare('SELECT id, name FROM admin_users');
-
-    $result = $stmt->execute();
+    $userEntity = $this->getEntity();
 
     $i = 0;
-    while($user = $result->fetchArray(SQLITE3_ASSOC)) {
+    foreach($userEntity->getAll() as $user) {
         $key = $user['id'];
 
         $i++;

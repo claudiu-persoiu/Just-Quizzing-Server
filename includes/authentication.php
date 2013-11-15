@@ -29,8 +29,6 @@ function authenticationForm() {
 
 function authenticateAbstract($sessionKey, $sessionFields = array(), $usersTable) {
 
-    global $db;
-
     if($_GET['logout'] && $_SESSION[$sessionKey]) {
 
         $_SESSION[$sessionKey] = null;
@@ -52,16 +50,13 @@ function authenticateAbstract($sessionKey, $sessionFields = array(), $usersTable
     }
 
     if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW']) && !$_SESSION[$sessionKey]) {
-        $stmt = $db->prepare('SELECT * FROM '.$usersTable.' WHERE name = :name');
 
-        $stmt->bindParam(':name', $_SERVER['PHP_AUTH_USER'], SQLITE3_TEXT);
+        $row = DatabaseEntity::getEntity($usersTable)->getOne(array(), array('name' => $_SERVER['PHP_AUTH_USER']));
 
-        $result = $stmt->execute();
+        if($row) {
+            $seed = getSeed($row['pass']);
 
-        if($row = $result->fetchArray(SQLITE3_ASSOC)) {
-            $seed = substr($row['pass'], strpos($row['pass'], ':') + 1);
-
-            if($row['pass'] == (md5($_SERVER['PHP_AUTH_PW'] . ':' . $seed) . ':' . $seed)) {
+            if($row['pass'] == hashPass($_SERVER['PHP_AUTH_PW'], $seed)) {
                 $_SESSION[$sessionKey] = $row['name'];
 
                 foreach($sessionFields as $key => $field) {

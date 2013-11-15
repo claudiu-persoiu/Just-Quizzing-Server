@@ -24,5 +24,5 @@ require_once('includes' . DIRECTORY_SEPARATOR . 'config.php');
 require_once('includes' . DIRECTORY_SEPARATOR . 'authentication_admin.php');
 require_once('includes' . DIRECTORY_SEPARATOR . 'functions.php');
 
-$controller = new adminQuestions();
+$controller = new AdminQuestions();
 $controller->dispatch();

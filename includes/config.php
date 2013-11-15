@@ -22,25 +22,10 @@
 
 session_start();
 
-define('JSON_FILE', 'data' . DIRECTORY_SEPARATOR .'default.json');
+require_once 'includes' . DIRECTORY_SEPARATOR . 'functions.php';
 
-//define('TITLE', 'Test some? - Just quizzing');
+$config = DatabaseEntity::getEntity('config');
 
-$db = new SQLite3('data/db.info');
-$db->exec("PRAGMA journal_mode = MEMORY;
-PRAGMA temp_store   = MEMORY;
-PRAGMA encoding     = 'UTF-8';");
-
-$stmt = $db->prepare('SELECT config, value FROM config');
-
-$result = $stmt->execute();
-
-while($row = $result->fetchArray(SQLITE3_ASSOC)) {
+foreach($config->getAll(array('config', 'value')) as $row) {
     define(strtoupper($row['config']), $row['value']);
 }
-
-function classAutoloader($class) {
-    require_once 'includes' . DIRECTORY_SEPARATOR . 'class' . DIRECTORY_SEPARATOR . $class . '.php';
-}
-
-spl_autoload_register('classAutoloader');
