@@ -20,76 +20,10 @@
  *
  */
 
-class AdminUsersFrontend extends AbstractController {
+class AdminUsersFrontend extends UsersAbstractController {
 
-    public function indexAction() {
-        $this->renderLayout('users_frontend');
-    }
-
-    protected function getEntity() {
-        return DatabaseEntity::getEntity('users');
-    }
-
-    public function updateAction() {
-        if(count($_POST) == 0 || !isset($_POST['username'])) {
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit;
-        }
-
-        $pass = encryptPass($_POST['password']);
-
-        $usersEntity = $this->getEntity();
-
-        $key = (int) $_POST['key'];
-
-        if($_POST['key']) {
-
-            $usersEntity->update(array('name' => $_POST['username'], 'pass' => $pass), array('id' => $key));
-
-            $message = 'User modified!';
-
-        } else {
-
-            $usersEntity->insert(array('name' => $_POST['username'], 'pass' => $pass));
-
-            $message = 'User added!';
-        }
-
-        $_SESSION['message'] = $message;
-        header("Location: " . $_SERVER['PHP_SELF']);
-        exit;
-
-    }
-
-    public function editAction() {
-
-        if(!isset ($_GET['key'])) {
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit;
-        }
-
-        $key = (int)$_GET['key'];
-
-        $data = $this->getEntity()->getOne(array(), array('id' => $key));
-
-        $this->renderLayout('users_frontend', array('key' => $key, 'data' => $data));
-
-    }
-
-    public function delAction() {
-        if(!isset ($_GET['key'])) {
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit;
-        }
-
-        $key = (int)$_GET['key'];
-
-        $this->getEntity()->delete(array('id' => $key));
-
-        $_SESSION['message'] = 'User deleted!';
-        header("Location: " . $_SERVER['PHP_SELF']);
-        exit;
-
+    public function getTemplate() {
+        return 'users_frontend';
     }
 
     public function restrictionAction() {
