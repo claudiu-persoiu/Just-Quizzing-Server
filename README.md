@@ -17,7 +17,7 @@ Installation
 
 Project URL
 -----------
-http://blog.claudiupersoiu.ro/
+http://blog.claudiupersoiu.ro/just-quizzing/
 
 ----
 
