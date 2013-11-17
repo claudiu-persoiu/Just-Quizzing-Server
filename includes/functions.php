@@ -39,4 +39,8 @@ function classAutoloader($class) {
     require_once 'includes' . DIRECTORY_SEPARATOR . 'class' . DIRECTORY_SEPARATOR . $class . '.php';
 }
 
+function mimeTypeToExtension($mime) {
+    return str_replace('image/', '.', $mime);
+}
+
 spl_autoload_register('classAutoloader');

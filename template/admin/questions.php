@@ -61,7 +61,7 @@
         </tr>
         <tr>
             <td class="label">Image</td>
-            <td><input type="file" name="image" value="<?php echo $data->img; ?>" /></td>
+            <td><input type="file" name="image" /></td>
         </tr>
         <input type="hidden" name="key" value="<?php echo $key; ?>" />
         <tr>

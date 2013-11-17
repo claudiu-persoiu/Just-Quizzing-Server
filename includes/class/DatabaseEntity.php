@@ -164,11 +164,7 @@ class DatabaseEntity {
         return $resultValues;
     }
 
-    public function delete(array $conditions) {
-
-        if(!count($conditions)) {
-            return false;
-        }
+    public function delete(array $conditions = array()) {
 
         $conditionsWhere = $this->conditionsArrayToString($conditions);
 
