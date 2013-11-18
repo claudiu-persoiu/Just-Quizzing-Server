@@ -185,6 +185,10 @@ foreach($entityQuestions->getAll() as $question) {
         font-size: larger;
     }
 
+    #content #body {
+        padding: 5px 5px 60px 5px; opacity: 0.9; max-width: 900px; margin: 0 auto;
+    }
+
 
 </style>
 
@@ -402,14 +406,14 @@ foreach($entityQuestions->getAll() as $question) {
 <body>
 <div id="content">
     <div id="header">
-        <div id="timer">0:00:00</div>
+        <div style="max-width: 900px; margin: 0 auto;">
+            <div id="timer">0:00:00</div>
 
-        <div id="questions"></div>
-        <h1><?php echo TITLE; ?></h1>
+            <div id="questions"></div>
+            <h1><?php echo TITLE; ?></h1>
+        </div>
     </div>
-    <div id="body" style="padding: 5px 5px 50px 5px; opacity: 0.9;">
-
-
+    <div id="body">
 
         <div id="controls">
             <button type="button" onclick="getQuestion();">next >>></button>
