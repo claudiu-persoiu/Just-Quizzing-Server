@@ -37,15 +37,13 @@ class AdminImportExport extends AbstractController {
     public function importAction() {
 
         if ($_FILES['questions']['error'] > 0 || !$_FILES['questions']['tmp_name']) {
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit;
+            $this->redirect();
         }
 
         $content = file_get_contents($_FILES['questions']['tmp_name']);
 
         if(!$content) {
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit;
+            $this->redirect();
         }
 
         if(isset($_POST) && $_POST['replace']) {
@@ -91,8 +89,7 @@ class AdminImportExport extends AbstractController {
         }
 
         $_SESSION['message'] = 'Questions inserted!';
-        header("Location: " . $_SERVER['PHP_SELF']);
-        exit;
+        $this->redirect();
 
     }
 

@@ -21,7 +21,7 @@
  */
 
 ?>
-<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data">
+<form method="post" action="<?php echo $_SERVER['PHP_SELF'] . '?controller=' . $_REQUEST['controller']; ?>" enctype="multipart/form-data">
     <table class="question-form">
         <thead>
         <tr>
@@ -55,7 +55,7 @@
         <th colspan="2">
             Self processing
             <div style="float: right;" id="show-processing">
-                <button class="submit" onclick="window.location='<?php echo $_SERVER['PHP_SELF']; ?>?action=export'">export questions</button>
+                <button class="submit" onclick="window.location='<?php echo $_SERVER['PHP_SELF']; ?>?controller=<?php echo $_REQUEST['controller']; ?>&action=export'">export questions</button>
             </div>
         </th>
     </tr>

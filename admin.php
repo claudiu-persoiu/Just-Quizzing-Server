@@ -22,5 +22,11 @@
 
 require_once('includes' . DIRECTORY_SEPARATOR . 'config.php');
 require_once('includes' . DIRECTORY_SEPARATOR . 'authentication_admin.php');
+require_once('includes' . DIRECTORY_SEPARATOR . 'functions.php');
 
-header('Location: admin_questions.php');
+if(!$_REQUEST['controller']) {
+    header('Location: ' . $_SERVER['PHP_SELF'] . '?controller=admin_questions');
+    exit();
+}
+
+Dispatcher::dispatch($_REQUEST['controller']);

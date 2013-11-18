@@ -40,7 +40,7 @@ function authenticateAbstract($sessionKey, $sessionFields = array(), $usersTable
         $_SESSION['logout'] = true;
 
         // get rid of the logout parameter
-        header( 'Location: ' . $_SERVER['PHP_SELF']);
+        header( 'Location: ' . $_SERVER['PHP_SELF'] . '?controller=' . $_REQUEST['controller']);
         exit();
     }
 

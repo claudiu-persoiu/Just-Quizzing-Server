@@ -61,4 +61,13 @@ class AbstractController {
         require_once('template' . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'layout.php');
     }
 
+    public function redirect($url = null) {
+        if($url == null) {
+            $url = $_SERVER['PHP_SELF'] . '?controller=' . $_REQUEST['controller'];
+        }
+
+        header("Location: " . $url);
+        exit;
+    }
+
 }

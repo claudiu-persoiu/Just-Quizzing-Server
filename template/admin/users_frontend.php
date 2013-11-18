@@ -21,7 +21,7 @@
  */
 
 ?>
-<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+<form method="post" action="<?php echo $_SERVER['PHP_SELF'] . '?controller=' . $_REQUEST['controller']; ?>">
 <table class="question-form">
     <thead>
     <tr>
@@ -46,7 +46,7 @@
 <input type="hidden" name="action" value="restriction">
 </form>
 
-<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+<form method="post" action="<?php echo $_SERVER['PHP_SELF'] . '?controller=' . $_REQUEST['controller']; ?>">
 <table class="question-form">
     <thead>
     <tr>
@@ -99,8 +99,8 @@
                 </div>
             </td>
             <td style="width: 90px;">
-                <a href="?action=edit&key=<?php echo $key; ?>" class="submit">edit</a>
-                <a href="?action=del&key=<?php echo $key; ?>" class="cancel">delete</a>
+                <a href="?controller=<?php echo $_REQUEST['controller']; ?>&action=edit&key=<?php echo $key; ?>" class="submit">edit</a>
+                <a href="?controller=<?php echo $_REQUEST['controller']; ?>&action=del&key=<?php echo $key; ?>" class="cancel">delete</a>
             </td>
         </tr>
     <?php } ?>

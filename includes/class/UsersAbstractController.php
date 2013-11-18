@@ -34,8 +34,7 @@ abstract class UsersAbstractController extends AbstractController {
 
     public function updateAction() {
         if(count($_POST) == 0 || !isset($_POST['username'])) {
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit;
+            $this->redirect();
         }
 
         $pass = encryptPass($_POST['password']);
@@ -58,16 +57,14 @@ abstract class UsersAbstractController extends AbstractController {
         }
 
         $_SESSION['message'] = $message;
-        header("Location: " . $_SERVER['PHP_SELF']);
-        exit;
+        $this->redirect();
 
     }
 
     public function editAction() {
 
         if(!isset ($_GET['key'])) {
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit;
+            $this->redirect();
         }
 
         $key = (int)$_GET['key'];
@@ -80,8 +77,7 @@ abstract class UsersAbstractController extends AbstractController {
 
     public function delAction() {
         if(!isset ($_GET['key'])) {
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit;
+            $this->redirect();
         }
 
         $key = (int)$_GET['key'];
@@ -89,8 +85,7 @@ abstract class UsersAbstractController extends AbstractController {
         $this->getEntity()->delete(array('id' => $key));
 
         $_SESSION['message'] = 'User deleted!';
-        header("Location: " . $_SERVER['PHP_SELF']);
-        exit;
+        $this->redirect();
 
     }
 

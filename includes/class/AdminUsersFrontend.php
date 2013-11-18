@@ -31,8 +31,7 @@ class AdminUsersFrontend extends UsersAbstractController {
         $config = 'frontend_user_restriction';
 
         if(count($_POST) == 0 || !isset($_POST[$config])) {
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit;
+            $this->redirect();
         }
 
         $value = (int)$_POST[$config];
@@ -40,8 +39,7 @@ class AdminUsersFrontend extends UsersAbstractController {
         DatabaseEntity::getEntity('config')->update(array('value' => $value), array('config' => $config));
 
         $_SESSION['message'] = 'Configuration updated';
-        header("Location: " . $_SERVER['PHP_SELF']);
-        exit;
+        $this->redirect();
 
     }
 }

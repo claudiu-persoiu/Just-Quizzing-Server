@@ -34,8 +34,7 @@ class AdminQuestions extends AbstractController {
     public function updateAction() {
 
         if(count($_POST) == 0 || !isset($_POST['question'])) {
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit;
+            $this->redirect();
         }
 
         $key = (int)$_POST['key'];
@@ -86,16 +85,14 @@ class AdminQuestions extends AbstractController {
         }
 
         $_SESSION['message'] = $message;
-        header("Location: " . $_SERVER['PHP_SELF']);
-        exit;
+        $this->redirect();
 
     }
 
     public function delAction() {
 
         if(!isset ($_GET['key'])) {
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit;
+            $this->redirect();
         }
 
         $key = (int)$_GET['key'];
@@ -114,15 +111,13 @@ class AdminQuestions extends AbstractController {
         $questionEntity->delete(array('id' => $key));
 
         $_SESSION['message'] = 'Question deleted!';
-        header("Location: " . $_SERVER['PHP_SELF']);
-        exit;
+        $this->redirect();
     }
 
     public function editAction() {
 
         if(!isset ($_GET['key'])) {
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit;
+            $this->redirect();
         }
 
         $key = (int)$_GET['key'];

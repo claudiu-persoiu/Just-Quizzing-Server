@@ -26,10 +26,10 @@
 
     <div class="menu-container">
 
-        <a <?php if($section == 'questions') echo 'class="selected"';?> href="admin_questions.php">Questions</a>
-        <a <?php if($section == 'users_backend') echo 'class="selected"';?> href="admin_users_backend.php">Admin users</a>
-        <a <?php if($section == 'users_frontend') echo 'class="selected"';?> href="admin_users_frontend.php">Site users</a>
-        <a <?php if($section == 'import_export') echo 'class="selected"';?> href="admin_import_export.php">Import/Export</a>
+        <a <?php if($section == 'questions') echo 'class="selected"';?> href="?controller=admin_questions">Questions</a>
+        <a <?php if($section == 'users_backend') echo 'class="selected"';?> href="?controller=admin_users_backend">Admin users</a>
+        <a <?php if($section == 'users_frontend') echo 'class="selected"';?> href="?controller=admin_users_frontend">Site users</a>
+        <a <?php if($section == 'import_export') echo 'class="selected"';?> href="?controller=admin_import_export">Import/Export</a>
 
         <a href="?logout=1" style="float:right;">logout</a>
     </div>

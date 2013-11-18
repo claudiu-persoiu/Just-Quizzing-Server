@@ -35,12 +35,12 @@ function getSeed($pass) {
     return substr($pass, strpos($pass, ':') + 1);
 }
 
-function classAutoloader($class) {
-    require_once 'includes' . DIRECTORY_SEPARATOR . 'class' . DIRECTORY_SEPARATOR . $class . '.php';
-}
-
 function mimeTypeToExtension($mime) {
     return str_replace('image/', '.', $mime);
+}
+
+function classAutoloader($class) {
+    require_once 'includes' . DIRECTORY_SEPARATOR . 'class' . DIRECTORY_SEPARATOR . $class . '.php';
 }
 
 spl_autoload_register('classAutoloader');
