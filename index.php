@@ -57,6 +57,10 @@ foreach($entityQuestions->getAll() as $question) {
         font-family: 'Lucida Grande', 'Lucida Sans Unicode', Helvetica, Arial, sans-serif;
     }
 
+    #answers {
+        width: 100%;
+    }
+
     #answers p {
 
         background-color: #efefef;
@@ -202,6 +206,10 @@ foreach($entityQuestions->getAll() as $question) {
         border-top-right-radius:5px;
     }
 
+    #results-timer {
+        margin-bottom: 20px;
+    }
+
     #timer, #questions {
         background: repeat-x scroll 0 0 #5a5a5a;
         border-radius: 5px 5px 5px 5px;
@@ -242,6 +250,10 @@ foreach($entityQuestions->getAll() as $question) {
     #header {
         padding: 33px 5px 10px;
         background: url('images/top.gif') repeat-x top left;
+    }
+
+    #header-container {
+        max-width: 900px; margin: 0 auto;
     }
 
     #footer {
@@ -540,7 +552,7 @@ foreach($entityQuestions->getAll() as $question) {
 <body>
 <div id="content">
     <div id="header">
-        <div style="max-width: 900px; margin: 0 auto;">
+        <div id="header-container">
             <div id="timer">0:00:00</div>
 
             <div id="questions"></div>
@@ -554,7 +566,7 @@ foreach($entityQuestions->getAll() as $question) {
         </div>
         <p id="question"></p>
 
-        <div id="answers" style="width: 100%;"></div>
+        <div id="answers"></div>
 
         <div id="controls">
             <button type="submit" id="verifica" onclick="checkAnswers();this.blur();">check</button>
@@ -576,7 +588,7 @@ foreach($entityQuestions->getAll() as $question) {
                     <div>Correct: <span id="good-final-result"></span></div>
                     <div>Wrong: <span id="bad-final-result"></span></div>
                     <div>Skipped: <span id="skipped-final-result"></span></div>
-                    <div style="margin-bottom: 20px;">Time: <span id="timer-result"></span></div>
+                    <div id="results-timer">Time: <span id="timer-result"></span></div>
                     <div><button onclick="document.location = document.location;" id="restart">Restart</button></div>
                 </div>
 
