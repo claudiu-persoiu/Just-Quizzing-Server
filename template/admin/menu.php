@@ -22,7 +22,7 @@
 
 ?>
 <div id="header">
-    <h1><?php echo TITLE; ?></h1>
+    <h1><img src="images/header-image.png"><?php echo TITLE; ?></h1>
 
     <div class="menu-container">
 

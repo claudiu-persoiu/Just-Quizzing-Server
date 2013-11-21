@@ -25,8 +25,14 @@ body {
 }
 
 #header h1 {
-    font-size: 16px;
+    font-size: 20px;
     padding-left: 20px;
+}
+
+#header h1 img {
+    display: inline;
+    vertical-align: middle;
+    padding-right: 5px;
 }
 
 #message {
