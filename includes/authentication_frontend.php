@@ -20,8 +20,6 @@
  *
  */
 
-require('authentication.php');
-
 if(FRONTEND_USER_RESTRICTION) {
 
     $authentication = new FrontendAuthentication();
