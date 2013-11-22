@@ -24,10 +24,17 @@ class DatabaseEntity {
 
     static protected $_resource;
 
+    static protected $_entities = array();
+
     protected $_entity;
 
     public static function getEntity($entity) {
-        return new self($entity);
+
+        if(!isset(self::$_entities[$entity])) {
+            self::$_entities[$entity] = new self($entity);
+        }
+
+        return self::$_entities[$entity];
     }
 
     public function __construct($entity) {
