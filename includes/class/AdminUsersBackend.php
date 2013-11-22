@@ -22,8 +22,16 @@
 
 class AdminUsersBackend extends UsersAbstractController {
 
+    protected function getEntity() {
+        return DatabaseEntity::getEntity('admin_users');
+    }
+
     public function getTemplate() {
         return 'users_backend';
+    }
+
+    public function getEncryptedPassword($pass) {
+        return AdminAuthentication::encryptPass($pass);
     }
 
 }

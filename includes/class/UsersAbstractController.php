@@ -28,16 +28,12 @@ abstract class UsersAbstractController extends AbstractController {
         $this->renderLayout($this->getTemplate());
     }
 
-    protected function getEntity() {
-        return DatabaseEntity::getEntity('users');
-    }
-
     public function updateAction() {
         if(count($_POST) == 0 || !isset($_POST['username'])) {
             $this->redirect();
         }
 
-        $pass = encryptPass($_POST['password']);
+        $pass = $this->getEncryptedPassword($_POST['password']);
 
         $usersEntity = $this->getEntity();
 

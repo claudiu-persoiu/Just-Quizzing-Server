@@ -23,5 +23,23 @@
 require('authentication.php');
 
 if(FRONTEND_USER_RESTRICTION) {
-    authenticateAbstract('authenticated_user', array('alias' => 'alias'), 'users');
+
+    $authentication = new FrontendAuthentication();
+
+    if(!$authentication->checkIsAuthenticated()) {
+
+        $user = $authentication->getUserData($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
+
+        if(!$user) {
+            $authentication->authenticationForm();
+        }
+
+        $authentication->authenticate($user);
+
+    } else if(isset($_GET['logout'])) {
+
+        $authentication->logout();
+
+    }
+
 }

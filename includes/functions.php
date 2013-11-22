@@ -20,21 +20,6 @@
  *
  */
 
-function encryptPass($raw) {
-
-    $passHash = substr(md5(microtime()), 0, 5);
-
-    return hashPass($raw, $passHash);
-}
-
-function hashPass($raw, $passHash) {
-    return md5($raw . ':' . $passHash) . ':' . $passHash;
-}
-
-function getSeed($pass) {
-    return substr($pass, strpos($pass, ':') + 1);
-}
-
 function mimeTypeToExtension($mime) {
     return str_replace('image/', '.', $mime);
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright (c) 2013 Claudiu Persoiu (http://www.claudiupersoiu.ro/)
  *
@@ -20,22 +19,13 @@
  *
  */
 
-$authentication = new AdminAuthentication();
+class FrontendAuthentication extends AbstractAuthentication {
 
-if(!$authentication->checkIsAuthenticated()) {
+    protected $_sessionKey = 'authenticated_user';
 
-    $user = $authentication->getUserData($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
+    protected $_sessionFields = array('user' => 'user');
 
-    if(!$user) {
-        $authentication->authenticationForm();
+    protected function getEntity() {
+        return DatabaseEntity::getEntity('users');
     }
-
-    $authentication->authenticate($user);
-
-} else if(isset($_GET['logout'])) {
-
-    $authentication->logout();
-
 }
-
-//authenticateAbstract('authenticated_admin', array('id' => 'authenticated_admin_id'), 'admin_users');

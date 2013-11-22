@@ -22,6 +22,10 @@
 
 class AdminUsersFrontend extends UsersAbstractController {
 
+    protected function getEntity() {
+        return DatabaseEntity::getEntity('users');
+    }
+
     public function getTemplate() {
         return 'users_frontend';
     }
@@ -41,5 +45,9 @@ class AdminUsersFrontend extends UsersAbstractController {
         $_SESSION['message'] = 'Configuration updated';
         $this->redirect();
 
+    }
+
+    public function getEncryptedPassword($pass) {
+        return FrontendAuthentication::encryptPass($pass);
     }
 }
