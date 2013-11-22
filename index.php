@@ -21,8 +21,30 @@
  */
 
 require_once('includes' . DIRECTORY_SEPARATOR . 'config.php');
+require_once('includes' . DIRECTORY_SEPARATOR . 'functions.php');
 
-require_once('includes' . DIRECTORY_SEPARATOR . 'authentication_frontend.php');
+// beginning authentication
+if(FRONTEND_USER_RESTRICTION) {
+
+    $authentication = new FrontendAuthentication();
+
+    if(!$authentication->checkIsAuthenticated()) {
+
+        $user = $authentication->getUserData($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
+
+        if(!$user) {
+            $authentication->authenticationForm();
+        }
+
+        $authentication->authenticate($user);
+
+    } else if(isset($_GET['logout'])) {
+
+        $authentication->logout();
+
+    }
+}
+// end authentication
 
 $entityQuestions = DatabaseEntity::getEntity('questions');
 

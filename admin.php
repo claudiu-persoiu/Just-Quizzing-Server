@@ -21,9 +21,30 @@
  */
 
 require_once('includes' . DIRECTORY_SEPARATOR . 'config.php');
-require_once('includes' . DIRECTORY_SEPARATOR . 'authentication_admin.php');
 require_once('includes' . DIRECTORY_SEPARATOR . 'functions.php');
 
+
+// beginning authentication
+$authentication = new AdminAuthentication();
+
+if(!$authentication->checkIsAuthenticated()) {
+
+    $user = $authentication->getUserData($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
+
+    if(!$user) {
+        $authentication->authenticationForm();
+    }
+
+    $authentication->authenticate($user);
+
+} else if(isset($_GET['logout'])) {
+
+    $authentication->logout();
+
+}
+// end authentication
+
+// redirect user to default controller if a controller is not set
 if(!$_REQUEST['controller']) {
     header('Location: ' . $_SERVER['PHP_SELF'] . '?controller=admin_questions');
     exit();
