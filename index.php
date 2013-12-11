@@ -466,7 +466,7 @@ foreach($entityQuestions->getAll() as $question) {
 
     };
 
-    function createAnswerObj(obj) {
+    var createAnswerObj = function (obj) {
         var p = document.createElement('p');
         p.onclick = function () {
             selectItem(this.id);
@@ -485,7 +485,7 @@ foreach($entityQuestions->getAll() as $question) {
         return p;
     }
 
-    function selectItem(id) {
+    var selectItem = function (id) {
 
         var no = id.replace('ap', '');
 
@@ -510,7 +510,7 @@ foreach($entityQuestions->getAll() as $question) {
 
     }
 
-    function checkAnswers() {
+    var checkAnswers = function () {
 
         if(!current) {
             return false;
@@ -550,7 +550,7 @@ foreach($entityQuestions->getAll() as $question) {
         percent();
     }
 
-    function skippQuestion() {
+    var skippQuestion = function () {
         skipped_questions++;
         getQuestion();
     }
