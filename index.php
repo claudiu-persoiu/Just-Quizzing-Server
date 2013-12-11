@@ -51,7 +51,7 @@ $entityQuestions = DatabaseEntity::getEntity('questions');
 $json = array();
 
 foreach($entityQuestions->getAll() as $question) {
-    $json['q' . $question['id']] = json_decode($question['question']);
+    $json[] = json_decode($question['question']);
 }
 
 ?>
@@ -353,6 +353,7 @@ foreach($entityQuestions->getAll() as $question) {
 
 <script type="text/javascript">
 
+    // Array shuffle implementation
     Array.prototype.shuffle = function () {
         var i = this.length;
         if (i == 0) return false;
@@ -366,13 +367,7 @@ foreach($entityQuestions->getAll() as $question) {
         return this;
     };
 
-    var json = <?php echo json_encode($json); ?>;
-
-    var json_arr = [];
-
-    for (var val in json) {
-        json_arr.push(json[val]);
-    }
+    var json_arr = <?php echo json_encode($json); ?>;
 
     var initial_length = json_arr.length;
 
@@ -461,7 +456,7 @@ foreach($entityQuestions->getAll() as $question) {
             answers_html.appendChild(p);
         }
 
-        document.getElementById('verifica').style.display = '';
+        document.getElementById('check').style.display = '';
         document.getElementById('next').style.display = 'none';
 
     };
@@ -540,14 +535,14 @@ foreach($entityQuestions->getAll() as $question) {
 
         if (correct == false) {
             incorrect_answers++;
-            document.getElementById('verifica').style.display = 'none';
+            document.getElementById('check').style.display = 'none';
             document.getElementById('next').style.display = 'block';
         } else {
             correct_answers++;
             getQuestion();
         }
 
-        percent();
+        updatePercent();
     }
 
     var skippQuestion = function () {
@@ -555,12 +550,12 @@ foreach($entityQuestions->getAll() as $question) {
         getQuestion();
     }
 
-    var percent = function () {
+    var updatePercent = function () {
 
         document.getElementById('results-stats').style.display = 'block';
 
-        document.getElementById('good-result-no').innerHTML = correct_answers; // + ' ok';
-        document.getElementById('bad-result-no').innerHTML = incorrect_answers; // + ' bad';
+        document.getElementById('good-result-no').innerHTML = correct_answers;
+        document.getElementById('bad-result-no').innerHTML = incorrect_answers;
 
         var proc = Math.round((86 / (correct_answers + incorrect_answers)) * correct_answers);
         document.getElementById('good-result').style.width = proc + '%';
