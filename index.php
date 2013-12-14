@@ -286,6 +286,7 @@ foreach($entityQuestions->getAll() as $question) {
         width: 100%;
         font-size: smaller;
         opacity: 0.8;
+        font-style: italic;
     }
 
     #footer a {
@@ -614,7 +615,7 @@ foreach($entityQuestions->getAll() as $question) {
 
     </div>
     <div id="footer">
-        Copyright 2013 <a href="http://claudiupersoiu.ro" target="_blank">ClaudiuPersoiu.ro</a>
+        by <a href="http://claudiupersoiu.ro" target="_blank">Claudiu Persoiu</a>
     </div>
 </div>
 

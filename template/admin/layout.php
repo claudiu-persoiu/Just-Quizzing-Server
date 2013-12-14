@@ -44,7 +44,7 @@
     <?php include($contentFile); ?>
     </div>
     <div id="footer">
-        Copyright 2013 <a href="http://claudiupersoiu.ro" target="_blank">ClaudiuPersoiu.ro</a>
+        by <a href="http://claudiupersoiu.ro" target="_blank">Claudiu Persoiu</a>
     </div>
 </div>
 </body>

@@ -178,6 +178,7 @@ table.question-form {
     width: 100%;
     font-size: smaller;
     opacity: 0.8;
+    font-style: italic;
 }
 
 #footer a {
