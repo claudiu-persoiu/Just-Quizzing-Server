@@ -615,7 +615,7 @@ foreach($entityQuestions->getAll() as $question) {
 
     </div>
     <div id="footer">
-        by <a href="http://claudiupersoiu.ro" target="_blank">Claudiu Persoiu</a>
+       A project by <a href="http://claudiupersoiu.ro" target="_blank">Claudiu Persoiu</a>
     </div>
 </div>
 
