@@ -587,7 +587,7 @@ foreach($entityQuestions->getAll() as $question) {
         <div id="answers"></div>
 
         <div id="controls">
-            <button type="submit" id="verifica" onclick="checkAnswers();this.blur();">check</button>
+            <button type="submit" id="check" onclick="checkAnswers();this.blur();">check</button>
             <button type="button" id="next" onclick="getQuestion(); this.blur();">continue</button>
             <button type="button" id="skip" onclick="skippQuestion();">skip</button>
         </div>
