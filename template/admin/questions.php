@@ -29,14 +29,14 @@
 <table class="question-form">
     <thead>
     <tr>
-        <th colspan="2"><?php echo $key ? 'Edit':'Add'; ?> question</th>
+        <th colspan="2"><?php echo (isset($key) && $key) ? 'Edit':'Add'; ?> question</th>
     </tr>
     </thead>
     <tbody>
         <tr>
             <td class="label" style="width: 120px;">Question</td>
             <td>
-                <textarea name="question" id="question" cols="70" rows="10"><?php echo $data->question; ?></textarea>
+                <textarea name="question" id="question" cols="70" rows="10"><?php if(isset($data->question)) echo $data->question; ?></textarea>
             </td>
         </tr>
         <tr>
@@ -52,10 +52,10 @@
                         <tr>
                             <td style="width: 16px;"><?php echo $a[$i]; ?></td>
                             <td style="width: 25px;">
-                                <input type="checkbox" name="a<?php echo $i; ?>" id="a<?php echo $i; ?>" value="true" <?php if($data->ans[$i]->corect) echo 'checked'; ?> />
+                                <input type="checkbox" name="a<?php echo $i; ?>" id="a<?php echo $i; ?>" value="true" <?php if(isset($data->ans[$i]->corect) && $data->ans[$i]->corect) echo 'checked'; ?> />
                             </td>
                             <td>
-                                <input type="text" name="q<?php echo $i; ?>" size="100" id="q<?php echo $i; ?>" value="<?php echo $data->ans[$i]->text; ?>" />
+                                <input type="text" name="q<?php echo $i; ?>" size="100" id="q<?php echo $i; ?>" value="<?php if(isset($data->ans[$i]->text)) echo $data->ans[$i]->text; ?>" />
                             </td>
                         </tr>
                     <?php } ?>
@@ -67,9 +67,9 @@
             <td class="label">Image</td>
             <td><input type="file" name="image" /></td>
         </tr>
-        <input type="hidden" name="key" value="<?php echo $key; ?>" />
+        <input type="hidden" name="key" value="<?php if(isset($key)) echo $key; ?>" />
         <tr>
-            <td colspan="2" style="text-align: right"><button class="submit"><?php echo $key ? "edit":"add"; ?> question</button></td>
+            <td colspan="2" style="text-align: right"><button class="submit"><?php echo (isset($key) && $key) ? "edit":"add"; ?> question</button></td>
         </tr>
     </tbody>
 </table>

@@ -112,7 +112,7 @@ class AdminImportExport extends AbstractController {
 
             $json[$key] = array();
 
-            if($questionData['img']) {
+            if(isset($questionData['img']) && $questionData['img']) {
                 $imgPath = 'data' . DIRECTORY_SEPARATOR . QUESTION_IMAGE . DIRECTORY_SEPARATOR . $questionData['img'];
 
                 if(is_file($imgPath)) {

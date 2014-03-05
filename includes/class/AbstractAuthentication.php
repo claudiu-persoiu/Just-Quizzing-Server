@@ -78,7 +78,7 @@ abstract class AbstractAuthentication {
 
     public function checkIsAuthenticated() {
 
-        if($_SESSION['logout_redirect']) {
+        if(isset($_SESSION['logout_redirect'])) {
             $_SESSION['logout_redirect'] = false;
             $this->authenticationForm();
         }

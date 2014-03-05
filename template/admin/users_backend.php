@@ -29,14 +29,14 @@
 <table class="question-form">
     <thead>
     <tr>
-        <th colspan="2"><?php echo $key ? 'Edit':'Add'; ?> user</th>
+        <th colspan="2"><?php echo (isset($key) && $key) ? 'Edit':'Add'; ?> user</th>
     </tr>
     </thead>
     <tbody>
         <tr>
             <td class="label" style="width: 120px;">Username</td>
             <td>
-                <input type="text" name="username" id="username" value="<?php echo $data['name']; ?>" />
+                <input type="text" name="username" id="username" value="<?php if(isset($data['name'])) echo $data['name']; ?>" />
             </td>
         </tr>
         <tr>
@@ -46,9 +46,9 @@
             </td>
         </tr>
 
-        <input type="hidden" name="key" value="<?php echo $key; ?>" />
+        <input type="hidden" name="key" value="<?php if(isset($key)) echo $key; ?>" />
         <tr>
-            <td colspan="2" style="text-align: right"><button class="submit"><?php echo $key ? "edit":"add"; ?> user</button></td>
+            <td colspan="2" style="text-align: right"><button class="submit"><?php echo (isset($key) && $key) ? "edit":"add"; ?> user</button></td>
         </tr>
     </tbody>
 </table>
