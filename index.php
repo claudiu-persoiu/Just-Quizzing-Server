@@ -59,18 +59,22 @@ $json = array();
 foreach($entityQuestions->getAll() as $question) {
     $json[] = json_decode($question['question']);
 }
+// cache headers
+$expires = 60 * 10;
+header("Pragma: public");
+header("Cache-Control: maxage=".$expires);
+header('Expires: ' . gmdate('D, d M Y H:i:s', time()+$expires) . ' GMT');
 
 ?>
 <!DOCTYPE html>
-<html>
+<html manifest="cache.appcache">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
-<title><?php echo TITLE; ?></title>
-<link rel="shortcut icon" href="images/favicon.ico"/>
-
-<link rel="stylesheet" type="text/css" href="css/frontend.css">
-
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+    <meta name="HandheldFriendly" content="true"/>
+    <title><?php echo TITLE; ?></title>
+    <link rel="shortcut icon" href="images/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="css/frontend.css">
 </head>
 <body>
 <div id="content">
