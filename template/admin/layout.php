@@ -49,7 +49,7 @@
     <?php include($contentFile); ?>
     </div>
     <div id="footer">
-        A project by by <a href="http://claudiupersoiu.ro" target="_blank">Claudiu Persoiu</a>
+        A project by <a href="http://claudiupersoiu.ro" target="_blank">Claudiu Persoiu</a>
     </div>
 </div>
 </body>
