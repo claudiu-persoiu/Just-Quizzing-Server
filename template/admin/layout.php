@@ -48,9 +48,7 @@
     <div id="body">
     <?php include($contentFile); ?>
     </div>
-    <div id="footer">
-        A project by <a href="http://claudiupersoiu.ro" target="_blank">Claudiu Persoiu</a>
-    </div>
+    <?php include('..' . DIRECTORY_SEPARATOR . 'footer.php'); ?>
 </div>
 </body>
 </html>
