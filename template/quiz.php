@@ -1,4 +1,3 @@
-
 <p id="question"></p>
 <div id="answers"></div>
 
@@ -23,7 +22,9 @@
             <div>Wrong: <span id="bad-final-result"></span></div>
             <div>Skipped: <span id="skipped-final-result"></span></div>
             <div id="results-timer">Time: <span id="timer-result"></span></div>
-            <div><button onclick="startQuiz();" id="restart">Restart</button></div>
+            <div>
+                <button onclick="startQuiz();" id="restart">Restart</button>
+            </div>
         </div>
 
     </div>
@@ -166,11 +167,11 @@ var startQuiz = function () {
         var minutes = Math.floor(time / 60) - hours * 60;
         var seconds = time - minutes * 60 - hours * 3600;
 
-        if(minutes < 10) {
+        if (minutes < 10) {
             minutes = '0' + minutes;
         }
 
-        if(seconds < 10) {
+        if (seconds < 10) {
             seconds = '0' + seconds;
         }
 
@@ -201,7 +202,7 @@ var getQuestion = function () {
 
     questions_container.innerHTML = (initial_length - json_arr.length) + '/' + initial_length;
 
-    if(!current) {
+    if (!current) {
         return stopGame();
     }
 
@@ -225,7 +226,7 @@ var getQuestion = function () {
             correct++;
         }
 
-        if(correct > 1) {
+        if (correct > 1) {
             answer_type = 'multiple';
         }
 
@@ -318,7 +319,7 @@ var selectItem = function (id) {
  */
 var checkAnswers = function () {
 
-    if(!current) {
+    if (!current) {
         return false;
     }
 
@@ -340,7 +341,9 @@ var checkAnswers = function () {
             p.className = 'correct';
         }
 
-        p.onclick = function () { return false; };
+        p.onclick = function () {
+            return false;
+        };
     }
 
     // if the answer is correct go to the next question, otherwise display the correct result
