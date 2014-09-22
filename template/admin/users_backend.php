@@ -34,7 +34,7 @@
     </thead>
     <tbody>
         <tr>
-            <td class="label" style="width: 120px;">Username</td>
+            <td class="label" class="align-right">Username</td>
             <td>
                 <input type="text" name="username" id="username" value="<?php if(isset($data['name'])) echo $data['name']; ?>" />
             </td>
@@ -48,7 +48,7 @@
 
         <input type="hidden" name="key" value="<?php if(isset($key)) echo $key; ?>" />
         <tr>
-            <td colspan="2" style="text-align: right"><button class="submit"><?php echo (isset($key) && $key) ? "edit":"add"; ?> user</button></td>
+            <td colspan="2" class="align-right"><button class="submit"><?php echo (isset($key) && $key) ? "edit":"add"; ?> user</button></td>
         </tr>
     </tbody>
 </table>
@@ -71,13 +71,13 @@
         $i++;
         ?>
         <tr <?php if($i % 2) { echo 'class="alternate"'; } ?>>
-            <td style="width: 20px;"><strong><?php echo $i; ?></strong></td>
+            <td class="identifier"><strong><?php echo $i; ?></strong></td>
             <td>
                 <div>
                     <?php echo $user['name']; ?>
                 </div>
             </td>
-            <td style="width: 90px;">
+            <td class="actions-container">
                 <a href="?controller=<?php echo $_REQUEST['controller']; ?>&action=edit&key=<?php echo $key; ?>" class="submit">edit</a>
                 <?php if($_SESSION['authenticated_admin_id'] != $key) { ?>
                     <a href="?controller=<?php echo $_REQUEST['controller']; ?>&action=del&key=<?php echo $key; ?>" class="cancel">delete</a>

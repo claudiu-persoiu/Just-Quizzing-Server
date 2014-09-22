@@ -35,6 +35,6 @@
         <a <?php if($section == 'users_frontend') echo 'class="selected"';?> href="?controller=admin_users_frontend">Site users</a>
         <a <?php if($section == 'import_export') echo 'class="selected"';?> href="?controller=admin_import_export">Import/Export</a>
 
-        <a href="?logout=1" style="float:right;">logout</a>
+        <a class="logout" href="?logout=1">logout</a>
     </div>
 </div>

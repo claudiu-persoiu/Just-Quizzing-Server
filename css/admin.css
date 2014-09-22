@@ -91,6 +91,14 @@ table.question-form {
     background-color: #F8F8F8;
 }
 
+.question-form .identifier {
+    width: 20px !important;
+}
+
+.question-form .actions-container {
+    width: 90px !important;
+}
+
 .alternate {
     background-color: #F8F8F8;
 }
@@ -144,6 +152,14 @@ table.question-form {
 .menu-container .selected {
     background-color: #fff;
     border-bottom: 1px solid #ffffff;
+}
+
+.menu-container .logout {
+    float:right;
+}
+
+.align-right {
+    text-align: right !important;
 }
 
 #content {

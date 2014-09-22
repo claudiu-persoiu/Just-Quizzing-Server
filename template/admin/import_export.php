@@ -46,7 +46,7 @@
             </td>
         </tr>
         <tr>
-            <td colspan="2" style="text-align: right"><button class="submit">import questions</button></td>
+            <td colspan="2" class="align-right"><button class="submit">import questions</button></td>
         </tr>
         </tbody>
     </table>

@@ -69,7 +69,7 @@
         </tr>
         <input type="hidden" name="key" value="<?php if(isset($key)) echo $key; ?>" />
         <tr>
-            <td colspan="2" style="text-align: right"><button class="submit"><?php echo (isset($key) && $key) ? "edit":"add"; ?> question</button></td>
+            <td colspan="2" class="align-right"><button class="submit"><?php echo (isset($key) && $key) ? "edit":"add"; ?> question</button></td>
         </tr>
     </tbody>
 </table>
@@ -101,7 +101,7 @@
         </td>
     </tr>
     <tr>
-        <td colspan="2" style="text-align: right">
+        <td colspan="2" class="align-right">
             <button class="submit" onclick="return process();">process data</button>
             <button class="cancel" onclick="return hideProcessing();">hide</button>
         </td>
@@ -187,7 +187,7 @@
         $i++;
         ?>
         <tr <?php if($i % 2) { echo 'class="alternate"'; } ?>>
-            <td style="width: 20px;"><strong><?php echo $i; ?></strong></td>
+            <td class="identifier"><strong><?php echo $i; ?></strong></td>
             <td>
                 <div><?php echo $data->question; ?></div>
                 <div style="padding-top: 12px;">
@@ -204,7 +204,7 @@
                     } ?>
                 </div>
             </td>
-            <td style="width: 90px;">
+            <td class="actions-container">
                 <a href="?controller=<?php echo $_REQUEST['controller']; ?>&action=edit&key=<?php echo $key; ?>" class="submit">edit</a>
                 <a href="?controller=<?php echo $_REQUEST['controller']; ?>&action=del&key=<?php echo $key; ?>" class="cancel">delete</a>
             </td>
