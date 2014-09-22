@@ -88,11 +88,7 @@ header('Expires: ' . gmdate('D, d M Y H:i:s', time()+$expires) . ' GMT');
     </div>
     <div id="body">
 
-        <div id="controls">
-
-        </div>
         <p id="question"></p>
-
         <div id="answers"></div>
 
         <div id="controls">
