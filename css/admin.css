@@ -91,6 +91,11 @@ table.question-form {
     background-color: #F8F8F8;
 }
 
+.question-form .input-label {
+    width: 120px;
+}
+
+
 .question-form .identifier {
     width: 20px !important;
 }

@@ -34,7 +34,7 @@
         </thead>
         <tbody>
         <tr>
-            <td class="label" style="width: 120px;">Questions file <br /><span style="font-size: 12px;">(Max file size: <?php echo ini_get('post_max_size'); ?>)</span></td>
+            <td class="label input-label">Questions file <br /><span style="font-size: 12px;">(Max file size: <?php echo ini_get('post_max_size'); ?>)</span></td>
             <td>
                 <input type="file" name="questions" />
             </td>

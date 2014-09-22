@@ -60,7 +60,7 @@
     <tbody>
     <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" onsubmit="return checkLeastAnswer();">
         <tr>
-            <td class="label" style="width: 120px;">Username</td>
+            <td class="label input-label">Username</td>
             <td>
                 <input type="text" name="username" id="username" value="<?php if(isset($data['name'])) echo $data['name']; ?>" />
             </td>

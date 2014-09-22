@@ -34,7 +34,7 @@
     </thead>
     <tbody>
         <tr>
-            <td class="label" style="width: 120px;">Question</td>
+            <td class="label input-label">Question</td>
             <td>
                 <textarea name="question" id="question" cols="70" rows="10"><?php if(isset($data->question)) echo $data->question; ?></textarea>
             </td>
