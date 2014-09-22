@@ -24,7 +24,7 @@
  *
  */
 
-class AdminImportExport extends AbstractController {
+class AdminImportExport extends AbstractAdminController {
 
     public function getTemplate() {
         return 'import_export';

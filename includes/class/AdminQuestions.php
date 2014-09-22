@@ -24,7 +24,7 @@
  *
  */
 
-class AdminQuestions extends AbstractController {
+class AdminQuestions extends AbstractAdminController {
 
 
     public function indexAction() {

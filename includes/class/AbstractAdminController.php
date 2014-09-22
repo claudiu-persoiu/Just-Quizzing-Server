@@ -24,54 +24,14 @@
  *
  */
 
-abstract class AbstractController {
-
-    public function preDispatch() {
-        return true;
-    }
-
-    public function postDispatch() {
-        return true;
-    }
-
-    public function dispatch() {
-
-        if(isset($_REQUEST['action'])) {
-
-            $method = $_REQUEST['action'] . 'Action';
-
-            if(!method_exists($this, $method)) {
-                header('HTTP/1.0 404 Not Found');
-                exit;
-            }
-        } else {
-            $method = 'indexAction';
-        }
-
-        $this->preDispatch();
-
-        $this->{$method}();
-
-        $this->postDispatch();
-
-    }
+abstract class AbstractAdminController extends AbstractController {
 
     public function renderLayout($section, $context = array()) {
 
         extract($context, EXTR_SKIP);
 
-        $contentFile = 'template' . DIRECTORY_SEPARATOR . $section . '.php';
+        $contentFile = 'template' . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . $section . '.php';
 
-        require_once('template' . DIRECTORY_SEPARATOR . 'layout.php');
+        require_once('template' . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'layout.php');
     }
-
-    public function redirect($url = null) {
-        if($url == null) {
-            $url = $_SERVER['PHP_SELF'] . '?controller=' . $_REQUEST['controller'];
-        }
-
-        header("Location: " . $url);
-        exit;
-    }
-
 }

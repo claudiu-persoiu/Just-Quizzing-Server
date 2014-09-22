@@ -24,7 +24,7 @@
  *
  */
 
-abstract class UsersAbstractController extends AbstractController {
+abstract class UsersAbstractController extends AbstractAdminController {
 
     abstract public function getTemplate();
 
