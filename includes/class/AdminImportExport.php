@@ -133,7 +133,7 @@ class AdminImportExport extends AbstractController {
 
         header('Content-Description: File Transfer');
         header('Content-type: application/json');
-        header('Content-Disposition: attachment; filename="JustQuizzing_'. @date('Y-m-d-H-i-s') .'.data"');
+        header('Content-Disposition: attachment; filename="JustQuizzing_'. @date('Y-m-d-H-i-s') .'.json"');
         header('Content-Transfer-Encoding: binary');
         header('Connection: Keep-Alive');
         header('Expires: 0');
