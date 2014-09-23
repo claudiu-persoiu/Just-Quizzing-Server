@@ -172,18 +172,3 @@ table.question-form {
     min-height: 100%;
     position: relative;
 }
-
-#footer {
-    position: absolute; bottom: 0px; height: 45px; vertical-align: bottom; line-height: 45px; text-align: center;
-    background: #eee;
-    border-top: #bbb 1px solid;
-    border-bottom: #222 6px solid;
-    width: 100%;
-    font-size: smaller;
-    opacity: 0.8;
-    font-style: italic;
-}
-
-#footer a {
-    color: #000000; text-decoration: none; font-weight: bold;
-}

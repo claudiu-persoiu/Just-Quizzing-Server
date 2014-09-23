@@ -26,6 +26,18 @@
 
 abstract class AbstractAdminController extends AbstractController {
 
+    protected function isRestricted () {
+        return true;
+    }
+
+    protected function getAuthenticator() {
+        return new AdminAuthentication();
+    }
+
+    public function displayAuthenticationForm() {
+        $this->renderLayout('..' . DIRECTORY_SEPARATOR . 'login', array('withoutMenu' => true));
+    }
+
     public function renderLayout($section, $context = array()) {
 
         extract($context, EXTR_SKIP);

@@ -31,15 +31,21 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title><?php echo TITLE; ?></title>
     <link rel="shortcut icon" href="images/favicon.ico"/>
-
-    <link rel="stylesheet" type="text/css" href="css/admin.css">
+    <link rel="stylesheet" type="text/css" href="css/admin.css"/>
+    <link rel="stylesheet" type="text/css" href="css/common.css"/>
 </head>
 
 <body>
 <div id="content">
-    <?php
-    $menu_selection = 'admin_questions';
-    include( 'template' . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'menu.php'); ?>
+    <div id="header">
+        <h1><img src="images/header-image.png"><?php echo TITLE; ?></h1>
+        <?php
+        if(!isset($withoutMenu)) {
+            $menu_selection = 'admin_questions';
+            include( 'template' . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'menu.php');
+        }
+        ?>
+    </div>
 
     <?php if (isset($_SESSION['message']) && $_SESSION['message']) : ?>
         <div id="message"><?php echo $_SESSION['message']; unset($_SESSION['message']); ?></div>
@@ -48,7 +54,7 @@
     <div id="body">
     <?php include($contentFile); ?>
     </div>
-    <?php include('..' . DIRECTORY_SEPARATOR . 'footer.php'); ?>
+    <?php include( __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'footer.php'); ?>
 </div>
 </body>
 </html>

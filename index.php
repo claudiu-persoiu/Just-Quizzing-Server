@@ -24,32 +24,7 @@
  *
  */
 
-ini_set('display_errors', '0');
-
 require_once('includes' . DIRECTORY_SEPARATOR . 'config.php');
 require_once('includes' . DIRECTORY_SEPARATOR . 'functions.php');
-
-// beginning authentication
-if(FRONTEND_USER_RESTRICTION) {
-
-    $authentication = new FrontendAuthentication();
-
-    if(!$authentication->checkIsAuthenticated()) {
-
-        $user = $authentication->getUserData($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
-
-        if(!$user) {
-            $authentication->authenticationForm();
-        }
-
-        $authentication->authenticate($user);
-
-    } else if(isset($_GET['logout'])) {
-
-        $authentication->logout();
-
-    }
-}
-// end authentication
 
 Dispatcher::dispatch('quiz');

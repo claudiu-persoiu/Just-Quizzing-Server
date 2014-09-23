@@ -25,7 +25,7 @@
  */
 
 ?>
-<form method="post" action="<?php echo $_SERVER['PHP_SELF'] . '?controller=' . $_REQUEST['controller']; ?>" onsubmit="return checkLeastAnswer();">
+<form method="post" action="<?php echo $_SERVER['PHP_SELF'] . '?controller=' . $this->getControllerName(); ?>" onsubmit="return checkLeastAnswer();">
 <table class="question-form">
     <thead>
     <tr>
@@ -34,7 +34,7 @@
     </thead>
     <tbody>
         <tr>
-            <td class="label" class="align-right">Username</td>
+            <td class="label input-label">Username</td>
             <td>
                 <input type="text" name="username" id="username" value="<?php if(isset($data['name'])) echo $data['name']; ?>" />
             </td>
@@ -57,7 +57,7 @@
 
 <table class="question-form">
     <thead>
-    <th colspan="3">Users</th>
+        <th colspan="3">Users</th>
     </thead>
     <tbody>
     <?php
@@ -78,9 +78,9 @@
                 </div>
             </td>
             <td class="actions-container">
-                <a href="?controller=<?php echo $_REQUEST['controller']; ?>&action=edit&key=<?php echo $key; ?>" class="submit">edit</a>
+                <a href="?controller=<?php echo $this->getControllerName(); ?>&action=edit&key=<?php echo $key; ?>" class="submit">edit</a>
                 <?php if($_SESSION['authenticated_admin_id'] != $key) { ?>
-                    <a href="?controller=<?php echo $_REQUEST['controller']; ?>&action=del&key=<?php echo $key; ?>" class="cancel">delete</a>
+                    <a href="?controller=<?php echo $this->getControllerName(); ?>&action=del&key=<?php echo $key; ?>" class="cancel">delete</a>
                 <?php } ?>
             </td>
         </tr>

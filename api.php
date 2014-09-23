@@ -24,8 +24,6 @@
  *
  */
 
-ini_set('display_errors', '0');
-
 require_once('includes' . DIRECTORY_SEPARATOR . 'config.php');
 require_once('includes' . DIRECTORY_SEPARATOR . 'functions.php');
 
@@ -40,10 +38,7 @@ if(FRONTEND_USER_RESTRICTION) {
         echo json_encode(array('error' => 'Invalid user or pass'));
         exit();
     }
-
-
 }
-
 // end authentication
 
 $entityQuestions = DatabaseEntity::getEntity('questions');

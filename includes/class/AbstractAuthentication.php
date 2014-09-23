@@ -70,25 +70,20 @@ abstract class AbstractAuthentication {
         $_SESSION[$this->_sessionKey] = $data['name'];
 
         foreach($this->_sessionFields as $key => $field) {
-            $_SESSION[$field] = $data[$key];
+            if(isset($data[$key])) {
+                $_SESSION[$field] = $data[$key];
+            }
         }
 
         return $this;
     }
 
     public function checkIsAuthenticated() {
-
-        if(isset($_SESSION['logout_redirect'])) {
-            $_SESSION['logout_redirect'] = false;
-            $this->authenticationForm();
-        }
-
-        if ($_SESSION[$this->_sessionKey]) {
+        if (isset($_SESSION[$this->_sessionKey]) && $_SESSION[$this->_sessionKey]) {
             return true;
         }
 
         return false;
-
     }
 
     public static function encryptPass($raw) {
@@ -103,12 +98,4 @@ abstract class AbstractAuthentication {
     public static function getSeed($pass) {
         return substr($pass, strpos($pass, ':') + 1);
     }
-
-    public function authenticationForm() {
-        header('WWW-Authenticate: Basic realm="Enter username and password!"');
-        header('HTTP/1.0 401 Unauthorized');
-        echo "No credentials? What a bummer...\n";
-        exit();
-    }
-
 }

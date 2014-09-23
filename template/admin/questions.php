@@ -25,7 +25,7 @@
  */
 
 ?>
-<form method="post" action="<?php echo $_SERVER['PHP_SELF'] . '?controller=' . $_REQUEST['controller']; ?>" onsubmit="return checkLeastAnswer();" enctype="multipart/form-data">
+<form method="post" action="<?php echo $_SERVER['PHP_SELF'] . '?controller=' . $this->getControllerName(); ?>" onsubmit="return checkLeastAnswer();" enctype="multipart/form-data">
 <table class="question-form">
     <thead>
     <tr>
@@ -205,8 +205,8 @@
                 </div>
             </td>
             <td class="actions-container">
-                <a href="?controller=<?php echo $_REQUEST['controller']; ?>&action=edit&key=<?php echo $key; ?>" class="submit">edit</a>
-                <a href="?controller=<?php echo $_REQUEST['controller']; ?>&action=del&key=<?php echo $key; ?>" class="cancel">delete</a>
+                <a href="?controller=<?php echo $this->getControllerName(); ?>&action=edit&key=<?php echo $key; ?>" class="submit">edit</a>
+                <a href="?controller=<?php echo $this->getControllerName(); ?>&action=del&key=<?php echo $key; ?>" class="cancel">delete</a>
             </td>
         </tr>
     <?php } ?>

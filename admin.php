@@ -24,36 +24,9 @@
  *
  */
 
-ini_set('display_errors', '0');
-
 require_once('includes' . DIRECTORY_SEPARATOR . 'config.php');
 require_once('includes' . DIRECTORY_SEPARATOR . 'functions.php');
 
+$controller = isset($_REQUEST['controller']) ? $_REQUEST['controller'] : 'admin_questions';
 
-// beginning authentication
-$authentication = new AdminAuthentication();
-
-if(!$authentication->checkIsAuthenticated()) {
-
-    $user = $authentication->getUserData($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
-
-    if(!$user) {
-        $authentication->authenticationForm();
-    }
-
-    $authentication->authenticate($user);
-
-} else if(isset($_GET['logout'])) {
-
-    $authentication->logout();
-
-}
-// end authentication
-
-// redirect user to default controller if a controller is not set
-if(!$_REQUEST['controller']) {
-    header('Location: ' . $_SERVER['PHP_SELF'] . '?controller=admin_questions');
-    exit();
-}
-
-Dispatcher::dispatch($_REQUEST['controller']);
+Dispatcher::dispatch($controller);
