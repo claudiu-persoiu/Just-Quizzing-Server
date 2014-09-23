@@ -140,20 +140,9 @@ class DatabaseEntity {
 
     protected function executeSelect($fieldsString, $conditions, $limit = false) {
 
-        $resource = self::getResource();
-
-        $limit = '';
-        if($limit !== false) {
-            if (gettype($limit) == 'integer') {
-                $limit .= ' LIMIT ' . (int)$limit;
-            } else if(gettype($limit) == 'array') {
-                $limit .= ' LIMIT ' . $limit[0] . ', ' . $limit[1];
-            }
-        }
-
         $conditionsWhere = $this->conditionsArrayToString($conditions);
 
-        $result = $resource->prepare('SELECT ' . $fieldsString . ' FROM ' . $this->_entity . $conditionsWhere . $limit);
+        $result = self::getResource()->prepare('SELECT ' . $fieldsString . ' FROM ' . $this->_entity . $conditionsWhere . $this->getLimit($limit));
 
         foreach ($conditions as $field => $value) {
             $result->bindValue(':c' . $field, $value);
@@ -170,11 +159,11 @@ class DatabaseEntity {
         return $resultValues;
     }
 
-    public function delete(array $conditions = array()) {
+    public function delete(array $conditions = array(), $limit = false) {
 
         $conditionsWhere = $this->conditionsArrayToString($conditions);
 
-        $stmt = self::getResource()->prepare('DELETE FROM ' . $this->_entity . $conditionsWhere);
+        $stmt = self::getResource()->prepare('DELETE FROM ' . $this->_entity . $conditionsWhere . $this->getLimit($limit));
 
         foreach ($conditions as $field => $value) {
             $stmt->bindValue(':c' . $field, $value);
@@ -182,6 +171,20 @@ class DatabaseEntity {
 
         return $stmt->execute();
 
+    }
+
+    protected function getLimit($limit) {
+
+        $result = '';
+        if($limit !== false) {
+            if (gettype($limit) == 'integer') {
+                $result .= ' LIMIT ' . (int)$limit;
+            } else if(gettype($limit) == 'array') {
+                $result .= ' LIMIT ' . $limit[0] . ', ' . $limit[1];
+            }
+        }
+
+        return $result;
     }
 
     protected function conditionsArrayToString($conditions) {
