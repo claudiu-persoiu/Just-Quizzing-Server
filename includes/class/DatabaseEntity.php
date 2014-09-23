@@ -73,13 +73,8 @@ class DatabaseEntity {
 
     public function getOne(array $fieldsArray = array(), array $conditions = array()) {
 
-        if(count($fieldsArray)) {
-            $fieldsString = implode(', ', $fieldsArray);
-        } else {
-            $fieldsString = '*';
-        }
+        $result = $this->getAll($fieldsArray, $conditions);
 
-        $result = $this->executeSelect($fieldsString, $conditions);
         return $result[0];
     }
 
