@@ -126,7 +126,7 @@ abstract class AbstractController
     public function redirect($url = null)
     {
         if ($url == null) {
-            $url = $_SERVER['PHP_SELF'] . '?controller=' . $_REQUEST['controller'];
+            $url = $_SERVER['PHP_SELF'] . '?controller=' . $this->getControllerName();
         }
 
         header("Location: " . $url);
