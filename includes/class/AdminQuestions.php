@@ -62,15 +62,15 @@ class AdminQuestions extends AbstractAdminController {
         $questionsEntity = $this->getEntity();
 
         if($key) {
-            $questionsEntity->update(array('question' => json_encode($elem)), array('id' => $key));
+            $result = $questionsEntity->update(array('question' => json_encode($elem)), array('id' => $key));
             $message = 'Question modified!';
         } else {
-            $questionsEntity->insert(array('question' => json_encode($elem)));
+            $result = $questionsEntity->insert(array('question' => json_encode($elem)));
             $message = 'Question added!';
 
         }
 
-        if ($_FILES["file"]["error"] == 0 && $_FILES["image"]["tmp_name"]) {
+        if ($_FILES["file"]["error"] == 0 && $_FILES["image"]["tmp_name"] && $result) {
             if(!$key) {
                 $key = $questionsEntity->lastInsertRowid();
             }
@@ -86,6 +86,10 @@ class AdminQuestions extends AbstractAdminController {
                 $questionsEntity->update(array('question' => json_encode($elem)), array('id' => $key));
 
             }
+        }
+
+        if(!$result) {
+            $message = 'There was a problem performing this operation!';
         }
 
         $_SESSION['message'] = $message;
@@ -112,9 +116,15 @@ class AdminQuestions extends AbstractAdminController {
             @unlink('data' . DIRECTORY_SEPARATOR . QUESTION_IMAGE . DIRECTORY_SEPARATOR . $result->img);
         }
 
-        $questionEntity->delete(array('id' => $key));
+        $result = $questionEntity->delete(array('id' => $key));
 
-        $_SESSION['message'] = 'Question deleted!';
+        if($result) {
+            $message = 'Question deleted!';
+        } else {
+            $message = 'There was a problem performing this operation!';
+        }
+
+        $_SESSION['message'] = $message;
         $this->redirect();
     }
 

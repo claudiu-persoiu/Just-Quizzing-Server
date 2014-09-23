@@ -45,15 +45,20 @@ abstract class UsersAbstractController extends AbstractAdminController {
 
         if($_POST['key']) {
 
-            $usersEntity->update(array('name' => $_POST['username'], 'pass' => $pass), array('id' => $key));
+            $result = $usersEntity->update(array('name' => $_POST['username'], 'pass' => $pass), array('id' => $key));
 
             $message = 'User modified!';
 
         } else {
 
-            $usersEntity->insert(array('name' => $_POST['username'], 'pass' => $pass));
+            $result = $usersEntity->insert(array('name' => $_POST['username'], 'pass' => $pass));
 
             $message = 'User added!';
+
+        }
+
+        if(!$result) {
+            $message = 'There was a problem performing this operation!';
         }
 
         $_SESSION['message'] = $message;
