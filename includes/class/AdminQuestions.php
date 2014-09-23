@@ -61,35 +61,35 @@ class AdminQuestions extends AbstractAdminController {
 
         $questionsEntity = $this->getEntity();
 
-        if($key) {
-            $result = $questionsEntity->update(array('question' => json_encode($elem)), array('id' => $key));
-            $message = 'Question modified!';
-        } else {
-            $result = $questionsEntity->insert(array('question' => json_encode($elem)));
-            $message = 'Question added!';
+        try {
 
-        }
-
-        if ($_FILES["file"]["error"] == 0 && $_FILES["image"]["tmp_name"] && $result) {
-            if(!$key) {
-                $key = $questionsEntity->lastInsertRowid();
-            }
-
-            $extension = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
-
-            if(in_array($extension, array('jpg', 'jpeg', 'gif', 'png'))) {
-                $fileTarget = 'data' . DIRECTORY_SEPARATOR . QUESTION_IMAGE . DIRECTORY_SEPARATOR . $key . '.' . $extension;
-                move_uploaded_file($_FILES['image']['tmp_name'], $fileTarget);
-
-                $elem->img = $key . '.' . $extension;
-
+            if($key) {
                 $questionsEntity->update(array('question' => json_encode($elem)), array('id' => $key));
-
+                $message = 'Question modified!';
+            } else {
+                $questionsEntity->insert(array('question' => json_encode($elem)));
+                $message = 'Question added!';
             }
-        }
 
-        if(!$result) {
-            $message = 'There was a problem performing this operation!';
+            if ($_FILES["file"]["error"] == 0 && $_FILES["image"]["tmp_name"]) {
+                if(!$key) {
+                    $key = $questionsEntity->lastInsertRowid();
+                }
+
+                $extension = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
+
+                if(in_array($extension, array('jpg', 'jpeg', 'gif', 'png'))) {
+                    $fileTarget = 'data' . DIRECTORY_SEPARATOR . QUESTION_IMAGE . DIRECTORY_SEPARATOR . $key . '.' . $extension;
+                    move_uploaded_file($_FILES['image']['tmp_name'], $fileTarget);
+
+                    $elem->img = $key . '.' . $extension;
+
+                    $questionsEntity->update(array('question' => json_encode($elem)), array('id' => $key));
+
+                }
+            }
+        } catch (Exception $e) {
+            $message = $e->getMessage();
         }
 
         $_SESSION['message'] = $message;
@@ -105,7 +105,6 @@ class AdminQuestions extends AbstractAdminController {
 
         $key = (int)$_GET['key'];
 
-
         $questionEntity = $this->getEntity();
 
         $oldQuestion = $questionEntity->getOne(array('question'), array('id' => $key));
@@ -116,12 +115,11 @@ class AdminQuestions extends AbstractAdminController {
             @unlink('data' . DIRECTORY_SEPARATOR . QUESTION_IMAGE . DIRECTORY_SEPARATOR . $result->img);
         }
 
-        $result = $questionEntity->delete(array('id' => $key));
-
-        if($result) {
+        try {
+            $questionEntity->delete(array('id' => $key));
             $message = 'Question deleted!';
-        } else {
-            $message = 'There was a problem performing this operation!';
+        } catch (Exception $e) {
+            $message = $e->getMessage();
         }
 
         $_SESSION['message'] = $message;

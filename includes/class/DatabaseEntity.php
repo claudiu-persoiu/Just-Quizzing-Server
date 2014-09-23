@@ -103,7 +103,7 @@ class DatabaseEntity {
             $stmt->bindValue(':' . $field, $value);
         }
 
-        return $stmt->execute();
+        return $this->execute($stmt);
     }
 
     public function update(array $fields, array $conditions) {
@@ -135,24 +135,24 @@ class DatabaseEntity {
             $stmt->bindValue($label, $value);
         }
 
-        return $stmt->execute();
+        return $this->execute($stmt);
     }
 
     protected function executeSelect($fieldsString, $conditions, $limit = false) {
 
         $conditionsWhere = $this->conditionsArrayToString($conditions);
 
-        $result = self::getResource()->prepare('SELECT ' . $fieldsString . ' FROM ' . $this->_entity . $conditionsWhere . $this->getLimit($limit));
+        $stmt = self::getResource()->prepare('SELECT ' . $fieldsString . ' FROM ' . $this->_entity . $conditionsWhere . $this->getLimit($limit));
 
         foreach ($conditions as $field => $value) {
-            $result->bindValue(':c' . $field, $value);
+            $stmt->bindValue(':c' . $field, $value);
         }
 
-        $stmtResult = $result->execute();
+        $result = $this->execute($stmt);
 
         $resultValues = array();
 
-        while($row = $stmtResult->fetchArray(SQLITE3_ASSOC)) {
+        while($row = $result->fetchArray(SQLITE3_ASSOC)) {
             $resultValues[] = $row;
         }
 
@@ -169,8 +169,7 @@ class DatabaseEntity {
             $stmt->bindValue(':c' . $field, $value);
         }
 
-        return $stmt->execute();
-
+        return $this->execute($stmt);
     }
 
     protected function getLimit($limit) {
@@ -200,13 +199,21 @@ class DatabaseEntity {
         }
 
         return substr($conditionsWhere, 0, -3);
-
     }
 
     public function lastInsertRowid() {
 
         return $this->getResource()->lastInsertRowid();
+    }
 
+    protected function execute(SQLite3Stmt $stmt) {
+        $result = $stmt->execute();
+
+        if(!$result) {
+            throw new Exception('There was a problem performing this operation!');
+        }
+
+        return $result;
     }
 
 }

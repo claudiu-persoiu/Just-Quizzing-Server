@@ -44,13 +44,14 @@ class AdminUsersFrontend extends UsersAbstractController {
 
         $value = (int)$_POST[$config];
 
-        $result = DatabaseEntity::getEntity('config')->update(array('value' => $value), array('config' => $config));
-
-        if(!$result) {
-            $_SESSION['message'] = 'There was a problem performing this operation!';
-        } else {
-            $_SESSION['message'] = 'Configuration updated';
+        try {
+            DatabaseEntity::getEntity('config')->update(array('value' => $value), array('config' => $config));
+            $message = 'Configuration updated';
+        } catch (Exception $e) {
+            $message = $e->getMessage();
         }
+
+        $_SESSION['message'] = $message;
 
         $this->redirect();
 

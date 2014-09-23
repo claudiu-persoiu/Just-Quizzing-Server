@@ -50,7 +50,11 @@ abstract class AbstractAuthentication {
 
     public function getUserData($user, $pass) {
 
-        $row = $this->getEntity()->getOne(array(), array('name' => $user));
+        try {
+            $row = $this->getEntity()->getOne(array(), array('name' => $user));
+        } catch (Exception $e) {
+            return false;
+        }
 
         if($row) {
             $seed = self::getSeed($row['pass']);

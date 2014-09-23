@@ -43,27 +43,20 @@ abstract class UsersAbstractController extends AbstractAdminController {
 
         $key = (int) $_POST['key'];
 
-        if($_POST['key']) {
-
-            $result = $usersEntity->update(array('name' => $_POST['username'], 'pass' => $pass), array('id' => $key));
-
-            $message = 'User modified!';
-
-        } else {
-
-            $result = $usersEntity->insert(array('name' => $_POST['username'], 'pass' => $pass));
-
-            $message = 'User added!';
-
-        }
-
-        if(!$result) {
-            $message = 'There was a problem performing this operation!';
+        try {
+            if($_POST['key']) {
+                $usersEntity->update(array('name' => $_POST['username'], 'pass' => $pass), array('id' => $key));
+                $message = 'User modified!';
+            } else {
+                $usersEntity->insert(array('name' => $_POST['username'], 'pass' => $pass));
+                $message = 'User added!';
+            }
+        } catch (Exception $e) {
+            $message = $e->getMessage();
         }
 
         $_SESSION['message'] = $message;
         $this->redirect();
-
     }
 
     public function editAction() {
@@ -87,11 +80,15 @@ abstract class UsersAbstractController extends AbstractAdminController {
 
         $key = (int)$_GET['key'];
 
-        $this->getEntity()->delete(array('id' => $key));
+        try {
+            $this->getEntity()->delete(array('id' => $key));
+            $message = 'User deleted!';
+        } catch (Exception $e) {
+            $message = $e->getMessage();
+        }
 
-        $_SESSION['message'] = 'User deleted!';
+
+        $_SESSION['message'] = $message;
         $this->redirect();
-
     }
-
 }

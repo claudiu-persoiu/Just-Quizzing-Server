@@ -50,49 +50,56 @@ class AdminImportExport extends AbstractAdminController {
             $this->redirect();
         }
 
-        if(isset($_POST) && $_POST['replace']) {
+        try {
+            if(isset($_POST) && $_POST['replace']) {
 
-            $this->getEntity()->delete();
+                $this->getEntity()->delete();
 
-            $files = glob('data' . DIRECTORY_SEPARATOR . QUESTION_IMAGE . DIRECTORY_SEPARATOR . '*'); // get all file names
+                $files = glob('data' . DIRECTORY_SEPARATOR . QUESTION_IMAGE . DIRECTORY_SEPARATOR . '*'); // get all file names
 
-            foreach($files as $file){ // iterate files
-                if(is_file($file)
-                    && in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), array('jpg', 'jpeg', 'gif', 'png'))) {
-                    unlink($file); // delete file
+                foreach($files as $file){ // iterate files
+                    if(is_file($file)
+                        && in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), array('jpg', 'jpeg', 'gif', 'png'))) {
+                        unlink($file); // delete file
 
+                    }
+
+                }
+            }
+
+            $jsonContent = @json_decode($content);
+
+            foreach($jsonContent as $item) {
+
+                $question = $item->question;
+
+                $this->getEntity()->insert(array('question' => $question));
+
+                if($item->image) {
+
+                    $imgName = $this->getEntity()->lastInsertRowid() . mimeTypeToExtension($item->image->mime);
+
+                    $imgPath = 'data' . DIRECTORY_SEPARATOR . QUESTION_IMAGE . DIRECTORY_SEPARATOR . $imgName;
+
+                    file_put_contents($imgPath, base64_decode($item->image->data));
+
+                    $questionData = json_decode($question);
+
+                    $questionData->img = $imgName;
+
+                    $this->getEntity()->update(array('question' => json_encode($questionData)),
+                        array('id' => $this->getEntity()->lastInsertRowid()));
                 }
 
             }
+
+            $message = 'Questions inserted!';
+
+        } catch (Exception $e) {
+            $message = $e->getMessage();
         }
 
-        $jsonContent = @json_decode($content);
-
-        foreach($jsonContent as $item) {
-
-            $question = $item->question;
-
-            $this->getEntity()->insert(array('question' => $question));
-
-            if($item->image) {
-
-                $imgName = $this->getEntity()->lastInsertRowid() . mimeTypeToExtension($item->image->mime);
-
-                $imgPath = 'data' . DIRECTORY_SEPARATOR . QUESTION_IMAGE . DIRECTORY_SEPARATOR . $imgName;
-
-                file_put_contents($imgPath, base64_decode($item->image->data));
-
-                $questionData = json_decode($question);
-
-                $questionData->img = $imgName;
-
-                $this->getEntity()->update(array('question' => json_encode($questionData)),
-                    array('id' => $this->getEntity()->lastInsertRowid()));
-            }
-
-        }
-
-        $_SESSION['message'] = 'Questions inserted!';
+        $_SESSION['message'] = $message;
         $this->redirect();
 
     }
