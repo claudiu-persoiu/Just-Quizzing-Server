@@ -179,6 +179,10 @@ body {
     word-wrap:break-word;
 }
 
+#question img {
+    padding-top: 20px;
+}
+
 #questions {
     float: right;
 }
