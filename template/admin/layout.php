@@ -47,8 +47,8 @@
         ?>
     </div>
 
-    <?php if (isset($_SESSION['message']) && $_SESSION['message']) : ?>
-        <div id="message"><?php echo $_SESSION['message']; unset($_SESSION['message']); ?></div>
+    <?php if (MessageHelper::has()) : ?>
+        <div id="message"><?php echo MessageHelper::get(); ?></div>
     <?php endif; ?>
 
     <div id="body">

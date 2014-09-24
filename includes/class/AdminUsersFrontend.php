@@ -46,12 +46,10 @@ class AdminUsersFrontend extends UsersAbstractController {
 
         try {
             DatabaseEntity::getEntity('config')->update(array('value' => $value), array('config' => $config));
-            $message = 'Configuration updated';
+            MessageHelper::set('Configuration updated');
         } catch (Exception $e) {
-            $message = $e->getMessage();
+            MessageHelper::set($e->getMessage());
         }
-
-        $_SESSION['message'] = $message;
 
         $this->redirect();
 

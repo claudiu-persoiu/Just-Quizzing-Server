@@ -13,31 +13,32 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
  * Just quizzing is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
  * You should have received a copy of the GNU General Public License
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+class AdminQuestions extends AbstractAdminController
+{
 
-class AdminQuestions extends AbstractAdminController {
 
-
-    public function indexAction() {
+    public function indexAction()
+    {
         $this->renderLayout('questions');
     }
 
-    protected function getEntity() {
+    protected function getEntity()
+    {
         return DatabaseEntity::getEntity('questions');
     }
 
-    public function updateAction() {
+    public function updateAction()
+    {
 
-        if(count($_POST) == 0 || !isset($_POST['question'])) {
+        if (count($_POST) == 0 || !isset($_POST['question'])) {
             $this->redirect();
         }
 
@@ -45,61 +46,68 @@ class AdminQuestions extends AbstractAdminController {
 
         $elem = new stdClass();
         $elem->question = nl2br(htmlspecialchars($_POST['question']));
-        $elem->type = $_POST['type'];
 
-        $elem->ans = array();
-
-        for($i = 0; $i < 6; $i++) {
-            if($_POST['q'.$i]) {
-                $ans = new stdClass();
-                $ans->text = htmlspecialchars($_POST['q'.$i]);
-                $ans->corect = $_POST['a'.$i];
-
-                $elem->ans[] = $ans;
-            }
-        }
+        $this->setAnswers($elem);
 
         $questionsEntity = $this->getEntity();
 
         try {
 
-            if($key) {
+            if ($key) {
                 $questionsEntity->update(array('question' => json_encode($elem)), array('id' => $key));
-                $message = 'Question modified!';
+                MessageHelper::set('Question modified!');
             } else {
                 $questionsEntity->insert(array('question' => json_encode($elem)));
-                $message = 'Question added!';
+                $key = $questionsEntity->lastInsertRowid();
+                MessageHelper::set('Question added!');
             }
 
-            if ($_FILES["file"]["error"] == 0 && $_FILES["image"]["tmp_name"]) {
-                if(!$key) {
-                    $key = $questionsEntity->lastInsertRowid();
-                }
+            $this->setImage($questionsEntity, $key, $elem);
 
-                $extension = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
-
-                if(in_array($extension, array('jpg', 'jpeg', 'gif', 'png'))) {
-                    $fileTarget = 'data' . DIRECTORY_SEPARATOR . QUESTION_IMAGE . DIRECTORY_SEPARATOR . $key . '.' . $extension;
-                    move_uploaded_file($_FILES['image']['tmp_name'], $fileTarget);
-
-                    $elem->img = $key . '.' . $extension;
-
-                    $questionsEntity->update(array('question' => json_encode($elem)), array('id' => $key));
-
-                }
-            }
         } catch (Exception $e) {
-            $message = $e->getMessage();
+            MessageHelper::set($e->getMessage());
         }
 
-        $_SESSION['message'] = $message;
         $this->redirect();
 
     }
 
-    public function delAction() {
+    protected function setAnswers(stdClass $element) {
+        $element->ans = array();
 
-        if(!isset ($_GET['key'])) {
+        for ($i = 0; $i < 6; $i++) {
+            if ($_POST['q' . $i]) {
+                $ans = new stdClass();
+                $ans->text = htmlspecialchars($_POST['q' . $i]);
+                $ans->corect = $_POST['a' . $i];
+
+                $element->ans[] = $ans;
+            }
+        }
+    }
+
+    protected function setImage(DatabaseEntity $questionsEntity, $key, stdClass $element)
+    {
+        if (!($_FILES["file"]["error"] == 0 && $_FILES["image"]["tmp_name"])) {
+            return;
+        }
+
+        $extension = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
+
+        if (in_array($extension, array('jpg', 'jpeg', 'gif', 'png'))) {
+            $fileTarget = getQuestionImageFolder() . $key . '.' . $extension;
+            move_uploaded_file($_FILES['image']['tmp_name'], $fileTarget);
+
+            $element->img = $key . '.' . $extension;
+
+            $questionsEntity->update(array('question' => json_encode($element)), array('id' => $key));
+        }
+    }
+
+    public function delAction()
+    {
+
+        if (!isset ($_GET['key'])) {
             $this->redirect();
         }
 
@@ -111,24 +119,25 @@ class AdminQuestions extends AbstractAdminController {
 
         $result = json_decode($oldQuestion['question']);
 
-        if($result && $result->img) {
-            @unlink('data' . DIRECTORY_SEPARATOR . QUESTION_IMAGE . DIRECTORY_SEPARATOR . $result->img);
+        if ($result && $result->img) {
+            @unlink(getQuestionImageFolder() . $result->img);
         }
 
         try {
             $questionEntity->delete(array('id' => $key));
-            $message = 'Question deleted!';
+            MessageHelper::set('Question deleted!');
         } catch (Exception $e) {
-            $message = $e->getMessage();
+            MessageHelper::set($e->getMessage());
         }
 
-        $_SESSION['message'] = $message;
+
         $this->redirect();
     }
 
-    public function editAction() {
+    public function editAction()
+    {
 
-        if(!isset ($_GET['key'])) {
+        if (!isset ($_GET['key'])) {
             $this->redirect();
         }
 

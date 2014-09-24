@@ -55,7 +55,7 @@ class AdminImportExport extends AbstractAdminController {
 
                 $this->getEntity()->delete();
 
-                $files = glob('data' . DIRECTORY_SEPARATOR . QUESTION_IMAGE . DIRECTORY_SEPARATOR . '*'); // get all file names
+                $files = glob(getQuestionImageFolder() . '*'); // get all file names
 
                 foreach($files as $file){ // iterate files
                     if(is_file($file)
@@ -79,7 +79,7 @@ class AdminImportExport extends AbstractAdminController {
 
                     $imgName = $this->getEntity()->lastInsertRowid() . mimeTypeToExtension($item->image->mime);
 
-                    $imgPath = 'data' . DIRECTORY_SEPARATOR . QUESTION_IMAGE . DIRECTORY_SEPARATOR . $imgName;
+                    $imgPath = getQuestionImageFolder() . $imgName;
 
                     file_put_contents($imgPath, base64_decode($item->image->data));
 
@@ -93,13 +93,12 @@ class AdminImportExport extends AbstractAdminController {
 
             }
 
-            $message = 'Questions inserted!';
+            MessageHelper::set('Questions inserted!');
 
         } catch (Exception $e) {
-            $message = $e->getMessage();
+            MessageHelper::set($e->getMessage());
         }
 
-        $_SESSION['message'] = $message;
         $this->redirect();
 
     }
@@ -120,7 +119,7 @@ class AdminImportExport extends AbstractAdminController {
             $json[$key] = array();
 
             if(isset($questionData['img']) && $questionData['img']) {
-                $imgPath = 'data' . DIRECTORY_SEPARATOR . QUESTION_IMAGE . DIRECTORY_SEPARATOR . $questionData['img'];
+                $imgPath = getQuestionImageFolder() . $questionData['img'];
 
                 if(is_file($imgPath)) {
                     $json[$key]['image'] = array(

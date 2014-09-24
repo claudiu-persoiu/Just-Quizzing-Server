@@ -28,6 +28,10 @@ function mimeTypeToExtension($mime) {
     return str_replace('image/', '.', $mime);
 }
 
+function getQuestionImageFolder() {
+    return 'data' . DIRECTORY_SEPARATOR . QUESTION_IMAGE . DIRECTORY_SEPARATOR;
+}
+
 function classAutoloader($class) {
     require_once 'includes' . DIRECTORY_SEPARATOR . 'class' . DIRECTORY_SEPARATOR . $class . '.php';
 }

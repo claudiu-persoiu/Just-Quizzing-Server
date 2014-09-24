@@ -55,7 +55,7 @@ foreach($entityQuestions->getAll() as $question) {
     $json[$key] = array();
 
     if($questionData['img']) {
-        $imgPath = 'data' . DIRECTORY_SEPARATOR . QUESTION_IMAGE . DIRECTORY_SEPARATOR . $questionData['img'];
+        $imgPath = getQuestionImageFolder() . $questionData['img'];
 
         if(is_file($imgPath)) {
             $json[$key]['image'] = array(

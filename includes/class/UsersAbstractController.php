@@ -46,16 +46,16 @@ abstract class UsersAbstractController extends AbstractAdminController {
         try {
             if($_POST['key']) {
                 $usersEntity->update(array('name' => $_POST['username'], 'pass' => $pass), array('id' => $key));
-                $message = 'User modified!';
+                MessageHelper::set('User modified!');
             } else {
                 $usersEntity->insert(array('name' => $_POST['username'], 'pass' => $pass));
-                $message = 'User added!';
+                MessageHelper::set('User added!');
             }
         } catch (Exception $e) {
-            $message = $e->getMessage();
+            MessageHelper::set($e->getMessage());
         }
 
-        $_SESSION['message'] = $message;
+
         $this->redirect();
     }
 
@@ -87,8 +87,7 @@ abstract class UsersAbstractController extends AbstractAdminController {
             $message = $e->getMessage();
         }
 
-
-        $_SESSION['message'] = $message;
+        MessageHelper::set($message);
         $this->redirect();
     }
 }
