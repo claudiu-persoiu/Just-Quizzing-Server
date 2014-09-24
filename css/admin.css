@@ -125,12 +125,9 @@ table.question-form {
 
 /* Style menu */
 .menu-container {
-
     display: block;
     padding: 5px;;
-
     height: 24px;
-
     border-bottom: 1px solid #cccccc;
 }
 
