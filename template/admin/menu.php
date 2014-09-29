@@ -28,6 +28,7 @@
 <div class="menu-container">
 
     <a <?php if($section == 'questions') echo 'class="selected"';?> href="?controller=admin_questions">Questions</a>
+    <a <?php if($section == 'categories') echo 'class="selected"';?> href="?controller=admin_categories">Categories</a>
     <a <?php if($section == 'users_backend') echo 'class="selected"';?> href="?controller=admin_users_backend">Admin users</a>
     <a <?php if($section == 'users_frontend') echo 'class="selected"';?> href="?controller=admin_users_frontend">Site users</a>
     <a <?php if($section == 'import_export') echo 'class="selected"';?> href="?controller=admin_import_export">Import/Export</a>

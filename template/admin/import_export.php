@@ -57,7 +57,7 @@
     <thead>
     <tr>
         <th colspan="2">
-            Self processing
+            Export questions
             <div style="float: right;" id="show-processing">
                 <button class="submit" onclick="window.location='<?php echo $_SERVER['PHP_SELF']; ?>?controller=<?php echo $this->getControllerName(); ?>&action=export'">export questions</button>
             </div>

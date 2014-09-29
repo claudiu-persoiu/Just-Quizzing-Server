@@ -123,6 +123,12 @@ abstract class AbstractController
         require_once('template' . DIRECTORY_SEPARATOR . 'layout.php');
     }
 
+    public function renderSlice($section, $context = array()) {
+        extract($context, EXTR_SKIP);
+
+        include('template' . DIRECTORY_SEPARATOR . 'slice' . DIRECTORY_SEPARATOR . $section . '.php');
+    }
+
     public function redirect($url = null)
     {
         if ($url == null) {

@@ -28,27 +28,26 @@
     <table class="question-form">
         <thead>
         <tr>
-            <th colspan="2"><?php echo (isset($key) && $key) ? 'Edit' : 'Add'; ?> user</th>
+            <th colspan="2"><?php echo (isset($key) && $key) ? 'Edit' : 'Add'; ?> category</th>
         </tr>
         </thead>
         <tbody>
         <?php
         $this->renderSlice('row_input', array(
-            'label' => 'Username',
-            'name' => 'username',
+            'label' => 'Name',
+            'name' => 'name',
             'data' => isset($data['name']) ? $data['name'] : ''
         ));
-
         $this->renderSlice('row_input', array(
-            'label' => 'Password',
-            'name' => 'password',
-            'data' => ''
+            'label' => 'Position',
+            'name' => 'ord',
+            'data' => isset($data['ord']) ? $data['ord'] : ''
         ));
         ?>
         <input type="hidden" name="key" value="<?php if (isset($key)) echo $key; ?>"/>
         <tr>
             <td colspan="2" class="align-right">
-                <button class="submit"><?php echo (isset($key) && $key) ? "edit" : "add"; ?> user</button>
+                <button class="submit"><?php echo (isset($key) && $key) ? "edit" : "add"; ?> category</button>
             </td>
         </tr>
         </tbody>
@@ -58,7 +57,7 @@
 
 <table class="question-form">
     <thead>
-    <th colspan="3">Users</th>
+    <th colspan="3">Categories</th>
     </thead>
     <tbody>
     <?php
@@ -66,8 +65,8 @@
     $userEntity = $this->getEntity();
 
     $i = 0;
-    foreach ($userEntity->getAll() as $user) {
-        $key = $user['id'];
+    foreach ($userEntity->getAll(array(), array(), 'ord') as $category) {
+        $key = $category['id'];
 
         $i++;
         ?>
@@ -77,16 +76,14 @@
             <td class="identifier"><strong><?php echo $i; ?></strong></td>
             <td>
                 <div>
-                    <?php echo $user['name']; ?>
+                    <?php echo $category['name']; ?>
                 </div>
             </td>
             <td class="actions-container">
                 <a href="?controller=<?php echo $this->getControllerName(); ?>&action=edit&key=<?php echo $key; ?>"
                    class="submit">edit</a>
-                <?php if ($_SESSION['authenticated_admin_id'] != $key) { ?>
-                    <a href="?controller=<?php echo $this->getControllerName(); ?>&action=del&key=<?php echo $key; ?>"
-                       class="cancel">delete</a>
-                <?php } ?>
+                <a href="?controller=<?php echo $this->getControllerName(); ?>&action=del&key=<?php echo $key; ?>"
+                   class="cancel">delete</a>
             </td>
         </tr>
     <?php } ?>
@@ -95,7 +92,7 @@
 <script>
 
     function validate() {
-        return validateInput('username', 'Add a username!') && validateInput('password', 'Add a password!');
+        return validateInput('name', 'Add a name!');
     }
 
 </script>

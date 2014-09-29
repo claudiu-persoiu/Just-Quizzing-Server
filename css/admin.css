@@ -44,7 +44,7 @@ body {
     margin-top: 10px;
 }
 
-textarea, input {
+textarea, input, select {
     width: 99%;
 }
 

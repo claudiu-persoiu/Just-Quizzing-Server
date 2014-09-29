@@ -29,7 +29,7 @@
 <table class="question-form">
     <thead>
     <tr>
-        <th colspan="2"><?php echo (isset($key) && $key) ? 'Edit':'Add'; ?> question</th>
+        <th colspan="2"><?php echo $key ? 'Edit':'Add'; ?> question</th>
     </tr>
     </thead>
     <tbody>
@@ -40,7 +40,6 @@
             </td>
         </tr>
         <tr>
-
             <td class="label">Answers</td>
             <td>
                 <table>
@@ -55,7 +54,7 @@
                                 <input type="checkbox" name="a<?php echo $i; ?>" id="a<?php echo $i; ?>" value="true" <?php if(isset($data->ans[$i]->corect) && $data->ans[$i]->corect) echo 'checked'; ?> />
                             </td>
                             <td>
-                                <input type="text" name="q<?php echo $i; ?>" size="100" id="q<?php echo $i; ?>" value="<?php if(isset($data->ans[$i]->text)) echo $data->ans[$i]->text; ?>" />
+                                <input type="text" name="q<?php echo $i; ?>" id="q<?php echo $i; ?>" value="<?php if(isset($data->ans[$i]->text)) echo $data->ans[$i]->text; ?>" />
                             </td>
                         </tr>
                     <?php } ?>
@@ -67,9 +66,23 @@
             <td class="label">Image</td>
             <td><input type="file" name="image" /></td>
         </tr>
-        <input type="hidden" name="key" value="<?php if(isset($key)) echo $key; ?>" />
         <tr>
-            <td colspan="2" class="align-right"><button class="submit"><?php echo (isset($key) && $key) ? "edit":"add"; ?> question</button></td>
+            <td class="label">Category</td>
+            <td>
+                <select name="categories[]" multiple="multiple">
+                    <?php
+                    $categories = DatabaseEntity::getEntity('categories')->getAll(array(), array(), 'ord');
+                    $categoriesIds = $this->getSelectedCategoriesArray($key);
+
+                    foreach($categories as $category) { ?>
+                        <option value="<?php echo $category['id']; ?>" <?php if(in_array($category['id'], $categoriesIds)) echo 'selected="selected"'; ?>><?php echo $category['name']; ?></option>
+                    <?php } ?>
+                </select>
+            </td>
+        </tr>
+        <input type="hidden" name="key" value="<?php echo $key; ?>" />
+        <tr>
+            <td colspan="2" class="align-right"><button class="submit"><?php echo $key ? "edit":"add"; ?> question</button></td>
         </tr>
     </tbody>
 </table>
