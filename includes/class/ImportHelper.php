@@ -18,7 +18,8 @@ class ImportHelper
         self::saveQuestions($jsonContent->questions, $categoriesRelations);
     }
 
-    protected static function cleanOldData() {
+    protected static function cleanOldData()
+    {
 
         $questionsEntity = DatabaseEntity::getEntity('questions');
         $questionsEntity->delete();
@@ -37,7 +38,8 @@ class ImportHelper
         }
     }
 
-    protected static function saveQuestions($jsonQuestions, $categoriesRelations) {
+    protected static function saveQuestions($jsonQuestions, $categoriesRelations)
+    {
 
         $questionsEntity = DatabaseEntity::getEntity('questions');
         $categoryQuestionEntity = DatabaseEntity::getEntity('category_question');
@@ -66,8 +68,6 @@ class ImportHelper
                     array('id' => $questionId));
             }
 
-
-
             foreach ($item->categories as $categoryId) {
                 $categoryQuestionEntity->insert(array(
                     'category_id' => $categoriesRelations[$categoryId],
@@ -77,14 +77,15 @@ class ImportHelper
         }
     }
 
-    protected static function getCategories($jsonCategories) {
+    protected static function getCategories($jsonCategories)
+    {
 
         $categories = array();
         $i = 1;
         while (true) {
             $key = 'c' . $i;
 
-            if(!isset($jsonCategories->{$key})) {
+            if (!isset($jsonCategories->{$key})) {
                 break;
             }
 
@@ -95,12 +96,13 @@ class ImportHelper
         return $categories;
     }
 
-    protected static function saveCategoriesAndGetRelation($categories) {
+    protected static function saveCategoriesAndGetRelation($categories)
+    {
 
         $relations = array();
         $categoriesEntity = DatabaseEntity::getEntity('categories');
 
-        foreach($categories as $key => $category) {
+        foreach ($categories as $key => $category) {
             $categoriesEntity->insert(array('name' => $category->name, 'ord' => $category->ord));
             $relations[$key] = $categoriesEntity->lastInsertRowid();
         }
