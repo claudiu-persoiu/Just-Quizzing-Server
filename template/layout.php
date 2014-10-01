@@ -41,10 +41,9 @@
 <div id="content">
     <div id="header">
         <?php if($this->getMenu()->count()) : ?>
-            <div id="menu-icon" class="menu-icon-closed" onclick="Menu.toggleMenu();">&nbsp;</div>
+            <div id="menu-icon" class="menu-icon-closed" onclick="Menu.toggle();">&nbsp;</div>
         <?php endif; ?>
         <div id="header-container" style="vertical-align: middle;">
-
             <img src="images/header-image.png" style="width: 30px;"><span><?php echo TITLE; ?></span>
         </div>
     </div>
@@ -55,15 +54,17 @@
                 if (is_object($item['name'])) :
                     echo '<ul>';
                     foreach ($item['name']->getItems() as $subItem) :
-                        echo '<li' . (isset($subItem['callback']) ? ' onclick="' . $subItem['callback'] . '"' : '') . '>';
-                        echo $subItem['name'];
-                        echo '</li>';
+                        $this->renderSlice('menu_item', array(
+                            'tag' => 'li',
+                            'item' => $subItem
+                        ));
                     endforeach;
                     echo '</ul>';
                 else :
-                    echo '<div' . (isset($item['callback']) ? ' onclick="' . $item['callback'] . '"' : '') . '>';
-                    echo $item['name'];
-                    echo '</div>';
+                    $this->renderSlice('menu_item', array(
+                        'tag' => 'div',
+                        'item' => $item
+                    ));
                 endif;
             endforeach;
             ?>

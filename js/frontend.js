@@ -23,7 +23,7 @@ var Menu = (function () {
     }
 
     return {
-        toggleMenu: function () {
+        toggle: function () {
             getMenuElements();
             toggleMenu();
         }
