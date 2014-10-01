@@ -21,9 +21,10 @@
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
 abstract class AbstractController
 {
+
+    protected $_authenticator = null;
 
     protected $_controllerName = false;
 
@@ -71,13 +72,9 @@ abstract class AbstractController
         return $method;
     }
 
-    protected function isRestricted() {
-        return FRONTEND_USER_RESTRICTION;
-    }
+    abstract protected function isRestricted();
 
-    protected function getAuthenticator() {
-        return new FrontendAuthentication();
-    }
+    abstract protected function getAuthenticator();
 
     protected function checkAuthentication()
     {
@@ -100,6 +97,9 @@ abstract class AbstractController
             }
 
             $authentication->authenticate($user);
+
+            $this->redirect();
+
         } else if (isset($_GET['logout'])) {
 
             $authentication->logout(true);
@@ -109,21 +109,12 @@ abstract class AbstractController
         return true;
     }
 
-    public function displayAuthenticationForm() {
-        $this->renderLayout('login');
-    }
+    abstract public function displayAuthenticationForm();
 
-    public function renderLayout($section, $context = array())
+    abstract public function renderLayout($section, $context = array());
+
+    public function renderSlice($section, $context = array())
     {
-
-        extract($context, EXTR_SKIP);
-
-        $contentFile = 'template' . DIRECTORY_SEPARATOR . $section . '.php';
-
-        require_once('template' . DIRECTORY_SEPARATOR . 'layout.php');
-    }
-
-    public function renderSlice($section, $context = array()) {
         extract($context, EXTR_SKIP);
 
         include('template' . DIRECTORY_SEPARATOR . 'slice' . DIRECTORY_SEPARATOR . $section . '.php');
@@ -139,13 +130,18 @@ abstract class AbstractController
         exit;
     }
 
-    public function getControllerName() {
+    public function getControllerName()
+    {
 
-        if(!$this->_controllerName) {
+        if (!$this->_controllerName) {
             $this->_controllerName = Dispatcher::classToController(get_class($this));
         }
 
         return $this->_controllerName;
     }
 
+    protected function isAuthenticated()
+    {
+        return $this->getAuthenticator()->checkIsAuthenticated();
+    }
 }

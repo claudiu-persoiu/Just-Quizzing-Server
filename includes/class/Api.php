@@ -1,8 +1,10 @@
 <?php
 
-class Api extends AbstractController {
+class Api extends AbstractFrontendController
+{
 
-    public function indexAction() {
+    public function indexAction()
+    {
         $data = ExportHelper::export();
         ExportHelper::cacheHeaders();
         echo $data;

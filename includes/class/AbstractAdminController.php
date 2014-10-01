@@ -31,7 +31,11 @@ abstract class AbstractAdminController extends AbstractController {
     }
 
     protected function getAuthenticator() {
-        return new AdminAuthentication();
+        if(!$this->_authenticator) {
+            $this->_authenticator = new AdminAuthentication();
+        }
+
+        return $this->_authenticator;
     }
 
     public function displayAuthenticationForm() {

@@ -170,8 +170,17 @@ body {
     color: white;
     float: left;
     letter-spacing: 1px;
-    padding: 10px;
+    padding: 7px;
+}
 
+#questions {
+    float: right;
+}
+
+#header-addition {
+    overflow: hidden;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 #question {
@@ -183,31 +192,91 @@ body {
     padding-top: 20px;
 }
 
-#questions {
-    float: right;
+#header {
+    border: 1px solid black;
+    padding: 7px;
+    background: #023E59;
 }
 
-h1 {
-    text-align: center; margin: 0 auto; font-size: 26px;
+#header span {
+    font-size: 20px;
+    color: #ffffff; font-weight: normal;
+    vertical-align: middle;
 }
 
 @media all and (max-width: 500px) {
-    h1 {
+    #header span {
         font-size: 18px;
     }
 }
 
-h1 img {
+#header img {
     display: inline; position: relative; vertical-align: middle; right: 5px;
+}
+
+#menu-icon {
+    vertical-align: middle; float: left; font-size: 20px; color: #ffffff; display: inline-block;
+    width: 45px;
+    cursor: pointer;
+}
+
+.menu-icon-closed:before, .menu-icon-open:hover:before {
+    content: "";
+    position: absolute;
+    left: 0.75em;
+    top: 0.75em;
+    width: 1em;
+    height: 0.15em;
+    background: white;
+    box-shadow:
+        0 0.35em 0 0 white,
+        0 0.7em 0 0 white;
+}
+
+.menu-icon-closed:hover:before, .menu-icon-open:before {
+    content: "";
+    position: absolute;
+    left: 0.75em;
+    top: 0.75em;
+    width: 1em;
+    height: 0.15em;
+    background: #cccccc;
+    box-shadow:
+        0 0.35em 0 0 #cccccc,
+        0 0.7em 0 0 #cccccc;
+}
+
+#side-menu {
+    background: #023E59;
+    width: auto;
+    position: absolute;
+    height: 100%;
+    z-index: 10;
+    color: #efefef;
+    min-width: 200px;
+    display: none;
+}
+
+#side-menu div, #side-menu li {
+    box-shadow: 0px 1px 0px #efefef;
+    padding: 10px 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#side-menu li {
+    list-style-type: none;
+    font-size: 15px;
+    font-weight: normal;
+}
+
+#side-menu ul {
+    padding: 0;
+    margin: 0;
 }
 
 #content {
     min-height: 100%; position: relative; margin: 0px;
-}
-
-#header {
-    padding: 33px 5px 10px;
-    background: url('../images/top.gif') repeat-x top left;
 }
 
 #header-container {

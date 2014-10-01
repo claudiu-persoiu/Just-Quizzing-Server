@@ -25,7 +25,12 @@
  */
 
 ?>
-<p id="question"></p>
+<div id="header-addition">
+    <div id="timer">0:00:00</div>
+    <div id="questions"></div>
+</div>
+
+<div id="question"></div>
 <div id="answers"></div>
 
 <div id="controls">
@@ -57,11 +62,6 @@
     </div>
 </div>
 
-<div id="header-addition">
-    <div id="timer">0:00:00</div>
-    <div id="questions"></div>
-</div>
-
 <script type="text/javascript">
 
 // Array shuffle implementation
@@ -77,18 +77,6 @@ Array.prototype.shuffle = function () {
     }
     return this;
 };
-
-(function () {
-    var headerContainer = document.getElementById('header-container');
-
-    headerContainer.insertBefore(
-        document.getElementById('questions'), headerContainer.firstChild
-    );
-
-    headerContainer.insertBefore(
-        document.getElementById('timer'), headerContainer.firstChild
-    );
-})();
 
 /**
  * Clone JS objects or array
@@ -168,7 +156,7 @@ var correct_answers,
  */
 var startQuiz = function () {
     // clone the original json object
-    json_arr = clone(json_base_arr);
+    json_arr = clone(json_base_arr.questions);
 
     // get the length of the json object
     initial_length = json_arr.length;
@@ -186,23 +174,14 @@ var startQuiz = function () {
     // reset the time
     time = 0;
 
+    clearInterval(timer);
+    displayTime(time);
+
     // set the interval to update the time
     timer = setInterval(function () {
         time++;
 
-        var hours = Math.floor(time / 3600);
-        var minutes = Math.floor(time / 60) - hours * 60;
-        var seconds = time - minutes * 60 - hours * 3600;
-
-        if (minutes < 10) {
-            minutes = '0' + minutes;
-        }
-
-        if (seconds < 10) {
-            seconds = '0' + seconds;
-        }
-
-        timer_container.innerHTML = hours + ':' + minutes + ':' + seconds;
+        displayTime(time);
     }, 1000);
 
     // in case of a restart hide the result stats
@@ -216,6 +195,23 @@ var startQuiz = function () {
 
     return true;
 
+}
+
+var displayTime = function (time) {
+
+    var hours = Math.floor(time / 3600);
+    var minutes = Math.floor(time / 60) - hours * 60;
+    var seconds = time - minutes * 60 - hours * 3600;
+
+    if (minutes < 10) {
+        minutes = '0' + minutes;
+    }
+
+    if (seconds < 10) {
+        seconds = '0' + seconds;
+    }
+
+    timer_container.innerHTML = hours + ':' + minutes + ':' + seconds;
 }
 
 /**
@@ -235,13 +231,13 @@ var getQuestion = function () {
 
     var img = '';
 
-    if (current.img) {
-        img = '<br /><img src="data/<?php echo QUESTION_IMAGE; ?>/' + current.img + '" width=100% />';
+    if (current.data.img) {
+        img = '<br /><img src="data/<?php echo QUESTION_IMAGE; ?>/' + current.data.img + '" width=100% />';
     }
 
-    question_container.innerHTML = current.question + img;
+    question_container.innerHTML = current.data.question + img;
 
-    var answers = current.ans.shuffle();
+    var answers = current.data.ans.shuffle();
 
     answers_container.innerHTML = '';
 
@@ -320,7 +316,7 @@ var selectItem = function (id) {
 
     if (answer_type == 'simple') {
 
-        for (var i = 0; i < current.ans.length; i++) {
+        for (var i = 0; i < current.data.ans.length; i++) {
             document.getElementById('ap' + i).className = '';
             document.getElementById('a' + i).value = '';
         }
@@ -351,7 +347,7 @@ var checkAnswers = function () {
     }
 
     var correct = true;
-    var answers = current.ans;
+    var answers = current.data.ans;
 
     for (var i = 0; i < answers.length; i++) {
 

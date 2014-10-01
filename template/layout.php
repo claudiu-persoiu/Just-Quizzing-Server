@@ -35,14 +35,40 @@
     <link rel="shortcut icon" href="images/favicon.ico"/>
     <link rel="stylesheet" type="text/css" href="css/frontend.css"/>
     <link rel="stylesheet" type="text/css" href="css/common.css"/>
+    <script type="text/javascript" src="js/frontend.js"></script>
 </head>
 <body>
 <div id="content">
     <div id="header">
-        <div id="header-container">
-            <h1><img src="images/header-image.png"><?php echo TITLE; ?></h1>
+        <?php if($this->getMenu()->count()) : ?>
+            <div id="menu-icon" class="menu-icon-closed" onclick="Menu.toggleMenu();">&nbsp;</div>
+        <?php endif; ?>
+        <div id="header-container" style="vertical-align: middle;">
+
+            <img src="images/header-image.png" style="width: 30px;"><span><?php echo TITLE; ?></span>
         </div>
     </div>
+    <?php if($this->getMenu()->count()) : ?>
+        <div id="side-menu">
+            <?php
+            foreach ($this->getMenu()->getItems() as $item) :
+                if (is_object($item['name'])) :
+                    echo '<ul>';
+                    foreach ($item['name']->getItems() as $subItem) :
+                        echo '<li' . (isset($subItem['callback']) ? ' onclick="' . $subItem['callback'] . '"' : '') . '>';
+                        echo $subItem['name'];
+                        echo '</li>';
+                    endforeach;
+                    echo '</ul>';
+                else :
+                    echo '<div' . (isset($item['callback']) ? ' onclick="' . $item['callback'] . '"' : '') . '>';
+                    echo $item['name'];
+                    echo '</div>';
+                endif;
+            endforeach;
+            ?>
+        </div>
+    <?php endif; ?>
     <div id="body">
         <?php include($contentFile); ?>
     </div>
