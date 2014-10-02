@@ -310,7 +310,7 @@ var getQuestion = function () {
     answer_type = 'simple';
     for (var i = 0; i < answers.length; i++) {
 
-        if (answers[i].corect === 'true') {
+        if (answers[i].correct === 'true') {
             correct++;
         }
 
@@ -423,12 +423,12 @@ var checkAnswers = function () {
         var p = document.getElementById('ap' + i);
         var input = document.getElementById('a' + i);
 
-        if (input.value == 'true' && answers[i]['corect'] == 'true') {
+        if (input.value == 'true' && answers[i]['correct'] == 'true') {
             p.className = 'selected_correct';
-        } else if (input.value == 'true' && answers[i]['corect'] !== 'true') {
+        } else if (input.value == 'true' && answers[i]['correct'] !== 'true') {
             corent = false;
             p.className = 'error';
-        } else if (input.value == '' && answers[i]['corect'] == 'true') {
+        } else if (input.value == '' && answers[i]['correct'] == 'true') {
             correct = false;
             p.className = 'correct';
         }

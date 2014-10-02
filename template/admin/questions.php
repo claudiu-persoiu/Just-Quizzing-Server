@@ -51,7 +51,7 @@
                         <tr>
                             <td style="width: 16px;"><?php echo $a[$i]; ?></td>
                             <td style="width: 25px;">
-                                <input type="checkbox" name="a<?php echo $i; ?>" id="a<?php echo $i; ?>" value="true" <?php if(isset($data->ans[$i]->corect) && $data->ans[$i]->corect) echo 'checked'; ?> />
+                                <input type="checkbox" name="a<?php echo $i; ?>" id="a<?php echo $i; ?>" value="true" <?php if(isset($data->ans[$i]->correct) && $data->ans[$i]->correct) echo 'checked'; ?> />
                             </td>
                             <td>
                                 <input type="text" name="q<?php echo $i; ?>" id="q<?php echo $i; ?>" value="<?php if(isset($data->ans[$i]->text)) echo $data->ans[$i]->text; ?>" />
@@ -208,7 +208,7 @@
                     $j = 0;
                     foreach($data->ans as $answer) {
                         echo $a[$j++] . ' - ';
-                        if($answer->corect) {
+                        if($answer->correct) {
                             echo '<b>' . $answer->text . '</b>';
                         } else {
                             echo $answer->text;

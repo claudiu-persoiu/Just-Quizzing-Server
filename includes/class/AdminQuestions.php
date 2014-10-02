@@ -74,26 +74,30 @@ class AdminQuestions extends AbstractAdminController
 
     }
 
-    protected function setCategories($key) {
-
+    protected function setCategories($key)
+    {
         $entity = DatabaseEntity::getEntity('category_question');
 
         $entity->delete(array('question_id' => $key));
 
-        foreach($_POST['categories'] as $categoryId) {
-            $entity->insert(array('category_id' => $categoryId, 'question_id' => $key));
+        if (!isset($_POST['categories']) || !is_array($_POST['categories'])) {
+            return;
         }
 
+        foreach ($_POST['categories'] as $categoryId) {
+            $entity->insert(array('category_id' => $categoryId, 'question_id' => $key));
+        }
     }
 
-    protected function setAnswers(stdClass $element) {
+    protected function setAnswers(stdClass $element)
+    {
         $element->ans = array();
 
         for ($i = 0; $i < 6; $i++) {
             if ($_POST['q' . $i]) {
                 $ans = new stdClass();
                 $ans->text = htmlspecialchars($_POST['q' . $i]);
-                $ans->corect = isset($_POST['a' . $i]) ? $_POST['a' . $i] : null;
+                $ans->correct = isset($_POST['a' . $i]) ? $_POST['a' . $i] : null;
 
                 $element->ans[] = $ans;
             }
@@ -102,7 +106,7 @@ class AdminQuestions extends AbstractAdminController
 
     protected function setImage(DatabaseEntity $questionsEntity, $key, stdClass $element)
     {
-        if (!isset($_FILES["file"]) || !($_FILES["file"]["error"] == 0 && $_FILES["image"]["tmp_name"])) {
+        if (!isset($_FILES["image"]) || !($_FILES["image"]["error"] == 0 && $_FILES["image"]["tmp_name"])) {
             return;
         }
 
@@ -162,7 +166,8 @@ class AdminQuestions extends AbstractAdminController
         $this->renderLayout('questions', array('key' => $key, 'data' => json_decode($result['question'])));
     }
 
-    protected function getSelectedCategoriesArray($key) {
+    protected function getSelectedCategoriesArray($key)
+    {
 
         $entity = DatabaseEntity::getEntity('category_question');
 
@@ -170,7 +175,7 @@ class AdminQuestions extends AbstractAdminController
 
         $result = array();
 
-        foreach($categoryIds as $categoryId) {
+        foreach ($categoryIds as $categoryId) {
             $result[] = $categoryId['category_id'];
         }
 
