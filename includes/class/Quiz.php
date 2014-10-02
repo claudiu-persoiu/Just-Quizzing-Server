@@ -11,12 +11,9 @@ class Quiz extends AbstractFrontendController
 
     public function indexAction()
     {
-        $json = array(
-            'questions' => $this->getQuestions(),
-            'categories' => $this->getCategories()
-        );
+        $json = $this->getQuestions();
 
-        $this->addCategoriesToMenu($json['categories']);
+        $this->addCategoriesToMenu($this->getCategories());
 
         // cache headers
         $expires = 60 * 10;
@@ -32,16 +29,29 @@ class Quiz extends AbstractFrontendController
         $questions = array();
 
         $entityQuestions = DatabaseEntity::getEntity('questions');
-        $entityRelations = DatabaseEntity::getEntity('category_question');
 
         foreach ($entityQuestions->getAll() as $question) {
             $questionArray = array();
             $questionArray['data'] = json_decode($question['question']);
-            $questionArray['relations'] = $entityRelations->getAll(array('category_id'), array('question_id' => $question['id']));
+            $questionArray['relations'] = $this->getQuestionRelations($question['id']);
             $questions[] = $questionArray;
         }
 
         return $questions;
+    }
+
+    protected function getQuestionRelations($questionId)
+    {
+        $relationsResult = DatabaseEntity::getEntity('category_question')
+            ->getAll(array('category_id'), array('question_id' => $questionId));
+
+        $relationsIds = array();
+
+        foreach ($relationsResult as $relation) {
+            $relationsIds[] = $relation['category_id'];
+        }
+
+        return $relationsIds;
     }
 
     protected function getCategories()
@@ -54,7 +64,7 @@ class Quiz extends AbstractFrontendController
         $subMenu = new Menu();
 
         foreach ($categories as $category) {
-            $subMenu->addItem($category['name'], 'startQuiz(' . $category['id'] . ');');
+            $subMenu->addItem($category['name'], 'startQuiz(' . $category['id'] . ', \'' . $category['name'] . '\');');
         }
 
         $this->getMenu()->addItem($subMenu, false, 20);

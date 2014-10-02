@@ -26,8 +26,10 @@
 
 ?>
 <div id="header-addition">
-    <div id="timer">0:00:00</div>
     <div id="questions"></div>
+    <div id="timer">0:00:00</div>
+    <div id="category-name"></div>
+
 </div>
 
 <div id="question"></div>
@@ -55,10 +57,9 @@
             <div>Skipped: <span id="skipped-final-result"></span></div>
             <div id="results-timer">Time: <span id="timer-result"></span></div>
             <div>
-                <button onclick="startQuiz();" id="restart">Restart</button>
+                <button onclick="startQuiz(categoryId, categoryName);" id="restart">Restart</button>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -126,6 +127,8 @@ var correct_answers,
     results_container = document.getElementById('final-results'),
 // questions container
     questions_container = document.getElementById('questions'),
+// category name container
+    category_name_container = document.getElementById('category-name'),
 // question container
     question_container = document.getElementById('question'),
 // answers container
@@ -144,19 +147,37 @@ var correct_answers,
     stats_correct_bar_container = document.getElementById('good-result'),
 // stats with wrong results bar
     stats_wrong_bar_container = document.getElementById('bad-result'),
+// controls container
+    controls_container = document.getElementById('controls'),
 // interval timer
     timer,
 // questions json object
-    json_arr;
+    json_arr,
+// current categoryId filter
+    categoryId = false,
+// category name
+    categoryName = '';
 
 /**
  * Start quiz
  *
  * @returns {boolean}
  */
-var startQuiz = function () {
+var startQuiz = function (categoryIdParam, categoryNameParam) {
+
     // clone the original json object
-    json_arr = clone(json_base_arr.questions);
+    json_arr = clone(json_base_arr);
+    categoryId = false;
+    categoryName = '';
+
+    if(categoryIdParam) {
+        categoryId = categoryIdParam;
+        categoryName = categoryNameParam;
+        // get the questions from a particular categoryId
+        json_arr = filterCategory(json_arr, categoryId);
+    }
+
+    category_name_container.innerHTML = categoryName;
 
     // get the length of the json object
     initial_length = json_arr.length;
@@ -177,6 +198,19 @@ var startQuiz = function () {
     clearInterval(timer);
     displayTime(time);
 
+    // in case of a restart hide the result stats
+    results_container.style.display = 'none';
+
+    // hide results stats because there isn't any answer at this point
+    stats_container.style.display = 'none';
+
+    // hide empty quiz
+    if (initial_length == 0) {
+        updateQuestionCounter();
+        hideQuiz();
+        return;
+    }
+
     // set the interval to update the time
     timer = setInterval(function () {
         time++;
@@ -184,19 +218,50 @@ var startQuiz = function () {
         displayTime(time);
     }, 1000);
 
-    // in case of a restart hide the result stats
-    results_container.style.display = 'none';
-
-    // hide results stats because there isn't any answer at this point
-    stats_container.style.display = 'none';
+    // show quiz form in case the previously there was an empty quiz
+    showQuiz();
 
     // get the first question
     getQuestion();
 
     return true;
-
 }
 
+/**
+ * Hide quiz if quiz is empty
+ *
+ */
+var hideQuiz = function () {
+    question_container.style.display = 'none';
+    answers_container.style.display = 'none';
+    controls_container.style.display = 'none';
+}
+
+/**
+ * Show quiz
+ *
+ */
+var showQuiz = function () {
+    question_container.style.display = 'block';
+    answers_container.style.display = 'block';
+    controls_container.style.display = 'block';
+}
+
+/**
+ * Filter questions by category
+ *
+ */
+var filterCategory = function (questions, category) {
+
+    return questions.filter(function (question) {
+        return question.relations.indexOf(category) !== -1;
+    });
+}
+
+/**
+ * Update timer label
+ *
+ */
 var displayTime = function (time) {
 
     var hours = Math.floor(time / 3600);
@@ -223,7 +288,7 @@ var getQuestion = function () {
 
     current = json_arr.pop();
 
-    questions_container.innerHTML = (initial_length - json_arr.length) + '/' + initial_length;
+    updateQuestionCounter();
 
     if (!current) {
         return stopGame();
@@ -260,6 +325,10 @@ var getQuestion = function () {
     check_container.style.display = '';
     next_container.style.display = 'none';
 };
+
+var updateQuestionCounter = function () {
+    questions_container.innerHTML = (initial_length - json_arr.length) + '/' + initial_length;
+}
 
 /**
  * Stop game if there aren't any more questions, see getQuestion
@@ -409,6 +478,8 @@ var updatePercent = function () {
 }
 
 // on window load start the quiz
-window.onload = startQuiz;
+window.onload = function () {
+    startQuiz();
+}
 
 </script>

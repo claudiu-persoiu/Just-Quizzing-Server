@@ -168,13 +168,24 @@ body {
     background: repeat-x scroll 0 0 #5a5a5a;
     border-radius: 5px 5px 5px 5px;
     color: white;
-    float: left;
     letter-spacing: 1px;
     padding: 7px;
 }
 
-#questions {
+#timer {
+    margin-left: 5px;
     float: right;
+}
+
+#questions {
+    margin-right: 5px;
+    float: left;
+    text-align: center;
+}
+
+#category-name {
+    margin-left: auto; margin-right: auto; padding: 7px; font-weight: bold;
+    font-size: larger;
 }
 
 #header-addition {
@@ -211,13 +222,18 @@ body {
 }
 
 #header img {
-    display: inline; position: relative; vertical-align: middle; right: 5px;
+    display: inline;
+    position: relative;
+    vertical-align: middle;
+    right: 5px;
+    padding-left: 5px;
 }
 
 #menu-icon {
     vertical-align: middle; float: left; font-size: 20px; color: #ffffff; display: inline-block;
-    width: 45px;
+    width: 35px;
     cursor: pointer;
+    padding-right: 5px;
 }
 
 .menu-icon-closed:before, .menu-icon-open:hover:before {
@@ -268,6 +284,7 @@ body {
     list-style-type: none;
     font-size: 15px;
     font-weight: normal;
+    padding-left: 15px;
 }
 
 #side-menu ul {
