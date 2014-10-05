@@ -20,7 +20,7 @@ abstract class AbstractFrontendController extends AbstractController
 
     public function preDispatch()
     {
-        if ($this->getAuthenticator()->checkIsAuthenticated()) {
+        if ($this->isRestricted() && $this->getAuthenticator()->checkIsAuthenticated()) {
             $this->getMenu()->addItem('Logout', 'redirect(\'?logout=1\')', 100);
         }
     }
