@@ -184,8 +184,9 @@ body {
 }
 
 #category-name {
-    margin-left: auto; margin-right: auto; padding: 7px; font-weight: bold;
+    margin-left: auto; margin-right: auto; padding: 5px; font-style: italic; overflow-style: panner; overflow: hidden; white-space: nowrap;
     font-size: larger;
+
 }
 
 #header-addition {

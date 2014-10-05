@@ -9,7 +9,7 @@ class ExportHelper {
         $categoriesRelations = array();
 
         foreach($categories as $key => $category) {
-            $categoriesRelations[$category['id']] = $key + 1;
+            $categoriesRelations[$category['id']] = $key;
         }
 
         $json = array(
@@ -25,7 +25,7 @@ class ExportHelper {
         $categoriesExport = array();
 
         foreach($categories as $i => $category) {
-            $categoriesExport['c' . ($i + 1)] = array(
+            $categoriesExport['c' . $i] = array(
                 'name' => $category['name'],
                 'ord'  => $category['ord']
             );
@@ -42,7 +42,7 @@ class ExportHelper {
 
         $i = 0;
         foreach ($entityQuestions->getAll() as $question) {
-            $questions['q' . ++$i] = self::exportElement($question, $categoriesRelations);
+            $questions['q' . $i++] = self::exportElement($question, $categoriesRelations);
         }
 
         return $questions;

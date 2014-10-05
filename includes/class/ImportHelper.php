@@ -81,7 +81,7 @@ class ImportHelper
     {
 
         $categories = array();
-        $i = 1;
+        $i = 0;
         while (true) {
             $key = 'c' . $i;
 

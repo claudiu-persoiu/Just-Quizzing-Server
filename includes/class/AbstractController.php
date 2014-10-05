@@ -96,9 +96,7 @@ abstract class AbstractController
                 return false;
             }
 
-            $authentication->authenticate($user);
-
-            $this->redirect();
+            $this->postAuthentication($user);
 
         } else if (isset($_GET['logout'])) {
 
@@ -107,6 +105,13 @@ abstract class AbstractController
         }
 
         return true;
+    }
+
+    public function postAuthentication($user)
+    {
+        $this->getAuthenticator()->authenticate($user);
+
+        $this->redirect();
     }
 
     abstract public function displayAuthenticationForm();

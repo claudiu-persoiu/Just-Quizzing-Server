@@ -1,10 +1,16 @@
 <?php
 
-class AdminCategories extends AbstractAdminController {
+class AdminCategories extends AbstractAdminController
+{
+
+    protected function getTemplate()
+    {
+        return 'categories';
+    }
 
     public function indexAction()
     {
-        $this->renderLayout('categories');
+        $this->renderLayout($this->getTemplate());
     }
 
     protected function getEntity()
@@ -13,21 +19,22 @@ class AdminCategories extends AbstractAdminController {
     }
 
 
-    public function updateAction() {
-        if(count($_POST) == 0 || !isset($_POST['name'])) {
+    public function updateAction()
+    {
+        if (count($_POST) == 0 || !isset($_POST['name'])) {
             $this->redirect();
         }
 
         $entity = $this->getEntity();
 
-        $key = (int) $_POST['key'];
+        $key = (int)$_POST['key'];
 
         try {
-            if($_POST['key']) {
-                $entity->update(array('name' => $_POST['name'], 'ord' => (int) $_POST['ord']), array('id' => $key));
+            if ($_POST['key']) {
+                $entity->update(array('name' => $_POST['name'], 'ord' => (int)$_POST['ord']), array('id' => $key));
                 MessageHelper::set('Category modified!');
             } else {
-                $entity->insert(array('name' => $_POST['name'], 'ord' => (int) $_POST['ord']));
+                $entity->insert(array('name' => $_POST['name'], 'ord' => (int)$_POST['ord']));
                 MessageHelper::set('Category added!');
             }
         } catch (Exception $e) {
@@ -38,9 +45,10 @@ class AdminCategories extends AbstractAdminController {
         $this->redirect();
     }
 
-    public function editAction() {
+    public function editAction()
+    {
 
-        if(!isset ($_GET['key'])) {
+        if (!isset ($_GET['key'])) {
             $this->redirect();
         }
 
@@ -52,8 +60,9 @@ class AdminCategories extends AbstractAdminController {
 
     }
 
-    public function delAction() {
-        if(!isset ($_GET['key'])) {
+    public function delAction()
+    {
+        if (!isset ($_GET['key'])) {
             $this->redirect();
         }
 
