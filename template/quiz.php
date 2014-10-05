@@ -13,12 +13,10 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
  * Just quizzing is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
  * You should have received a copy of the GNU General Public License
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  *
@@ -178,7 +176,7 @@ var startQuiz = function (categoryIdParam, categoryNameParam) {
     categoryId = false;
     categoryName = '';
 
-    if(categoryIdParam) {
+    if (categoryIdParam) {
         categoryId = categoryIdParam;
         categoryName = categoryNameParam;
         // get the questions from a particular categoryId
@@ -485,13 +483,21 @@ var updatePercent = function () {
     stats_wrong_bar_container.style.width = (86 - proc) + '%';
 }
 
+/**
+ * Display QR Code for mobile app import
+ */
 var displayQr = function () {
     document.getElementById('qr-container').style.display = '';
 
     var url = document.location.href;
 
+    // filter parameters
     url = url.replace("index.php", "");
+    if (url.indexOf("?") != -1) {
+        url = url.substring(0, url.indexOf("?"));
+    }
     url = encodeURIComponent(url);
+
 
     document.getElementById('qr-img').src = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + url;
 };
