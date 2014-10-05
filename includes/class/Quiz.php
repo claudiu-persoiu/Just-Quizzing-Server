@@ -6,6 +6,7 @@ class Quiz extends AbstractFrontendController
     public function preDispatch()
     {
         $this->getMenu()->addItem('Start', 'startQuiz();', 10);
+        $this->getMenu()->addItem('QR address', 'displayQr();', 30);
         parent::preDispatch();
     }
 

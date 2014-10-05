@@ -49,9 +49,9 @@
 </div>
 <div id="final-results">
     <div class="overlay"></div>
-    <div id="result-board" class="font-larder">
+    <div class="font-larger overlay-container">
         <div id="container">
-            <div class="font-larder" id='results'>Results</div>
+            <div class="font-larger" id='results'>Results</div>
             <div>Correct: <span id="good-final-result"></span></div>
             <div>Wrong: <span id="bad-final-result"></span></div>
             <div>Skipped: <span id="skipped-final-result"></span></div>
@@ -61,6 +61,14 @@
             </div>
         </div>
     </div>
+</div>
+
+<div id="qr-container" style="display: none;" onclick="this.style.display='none';">
+    <div class="overlay"></div>
+    <div class="overlay-container">
+        <img id="qr-img">
+    </div>
+
 </div>
 
 <script type="text/javascript">
@@ -476,6 +484,17 @@ var updatePercent = function () {
     stats_correct_bar_container.style.width = proc + '%';
     stats_wrong_bar_container.style.width = (86 - proc) + '%';
 }
+
+var displayQr = function () {
+    document.getElementById('qr-container').style.display = '';
+
+    var url = document.location.href;
+
+    url = url.replace("index.php", "");
+    url = encodeURIComponent(url);
+
+    document.getElementById('qr-img').src = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + url;
+};
 
 // on window load start the quiz
 window.onload = function () {
