@@ -15,6 +15,11 @@ Installation
 - Make sure the server have write permissions to db.info file and questions-img folder;
 - Run yourdomain/admin.php, with user "admin" and password "admin" (without quotes).
 
+Update
+------
+
+- follow the steps from instalation but don't copy data/db.info or data/questions-img/, these are your local information
+
 Project URL
 -----------
 http://blog.claudiupersoiu.ro/just-quizzing/
