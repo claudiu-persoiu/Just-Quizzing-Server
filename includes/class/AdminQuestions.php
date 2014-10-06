@@ -72,14 +72,15 @@ class AdminQuestions extends AbstractAdminController
 
     }
 
-    protected function setAnswers(stdClass $element) {
+    protected function setAnswers(stdClass $element)
+    {
         $element->ans = array();
 
         for ($i = 0; $i < 6; $i++) {
             if ($_POST['q' . $i]) {
                 $ans = new stdClass();
                 $ans->text = htmlspecialchars($_POST['q' . $i]);
-                $ans->corect = $_POST['a' . $i];
+                $ans->corect = isset($_POST['a' . $i]) ? $_POST['a' . $i] : null;
 
                 $element->ans[] = $ans;
             }
@@ -88,7 +89,7 @@ class AdminQuestions extends AbstractAdminController
 
     protected function setImage(DatabaseEntity $questionsEntity, $key, stdClass $element)
     {
-        if (!($_FILES["file"]["error"] == 0 && $_FILES["image"]["tmp_name"])) {
+        if (!isset($_FILES["image"]) || !($_FILES["image"]["error"] == 0 && $_FILES["image"]["tmp_name"])) {
             return;
         }
 
