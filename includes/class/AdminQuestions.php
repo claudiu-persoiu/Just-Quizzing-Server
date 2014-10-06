@@ -21,6 +21,7 @@
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 class AdminQuestions extends AbstractAdminController
 {
 
