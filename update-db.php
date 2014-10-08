@@ -3,6 +3,8 @@
 require_once('includes' . DIRECTORY_SEPARATOR . 'config.php');
 require_once('includes' . DIRECTORY_SEPARATOR . 'functions.php');
 
+ini_set('display_errors', '1');
+
 $dbResource = DatabaseEntity::getEntity('questions')->getResource();
 
 $dbResource->exec(
