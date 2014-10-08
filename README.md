@@ -17,14 +17,14 @@ Installation
 - Run *yourdomain/admin.php*, with user "admin" and password "admin" (without quotes);
 - Delete *upgrade-db.php*
 
-Update
+Upgrade
 ------
 
 - Backup the *data* folder in a safe location;
 - Overwrite the files with the new version;
 - Copy the data folder back in the directory and overwrite with your saved files;
 - Make sure the web server have write permissions to *db.info* file and *questions-img* folder;
-- Open *yourdomain/update-db.php* to update the database;
+- Open *yourdomain/update-db.php* to update the database, if there aren't any issues you should see *Update complete*;
 - After the script has run successfully delete *update-db.php*.
 
 Debug
