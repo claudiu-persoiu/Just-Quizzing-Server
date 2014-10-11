@@ -24,30 +24,22 @@
  *
  */
 
-abstract class AbstractAdminController extends AbstractController {
+class Api extends AbstractFrontendController
+{
 
-    protected function isRestricted () {
-        return true;
-    }
-
-    protected function getAuthenticator() {
-        if(!$this->_authenticator) {
-            $this->_authenticator = new AdminAuthentication();
-        }
-
-        return $this->_authenticator;
+    public function indexAction()
+    {
+        $data = ExportHelper::export();
+        ExportHelper::cacheHeaders();
+        echo $data;
     }
 
     public function displayAuthenticationForm() {
-        $this->renderLayout('..' . DIRECTORY_SEPARATOR . 'login', array('withoutMenu' => true));
+        echo json_encode(array('error' => 'Invalid user or pass'));
     }
 
-    public function renderLayout($section, $context = array()) {
-
-        extract($context, EXTR_SKIP);
-
-        $contentFile = 'template' . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . $section . '.php';
-
-        require_once('template' . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'layout.php');
+    public function postAuthentication($user)
+    {
+        return true;
     }
 }

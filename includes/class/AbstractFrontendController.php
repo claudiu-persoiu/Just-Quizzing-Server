@@ -24,30 +24,50 @@
  *
  */
 
-abstract class AbstractAdminController extends AbstractController {
+abstract class AbstractFrontendController extends AbstractController
+{
+    protected $_menu = false;
 
-    protected function isRestricted () {
-        return true;
+    protected function isRestricted()
+    {
+        return (boolean)FRONTEND_USER_RESTRICTION;
     }
 
-    protected function getAuthenticator() {
-        if(!$this->_authenticator) {
-            $this->_authenticator = new AdminAuthentication();
+    protected function getAuthenticator()
+    {
+        if (!$this->_authenticator) {
+            $this->_authenticator = new FrontendAuthentication();
         }
 
         return $this->_authenticator;
     }
 
-    public function displayAuthenticationForm() {
-        $this->renderLayout('..' . DIRECTORY_SEPARATOR . 'login', array('withoutMenu' => true));
+    public function preDispatch()
+    {
+        if ($this->isRestricted() && $this->getAuthenticator()->checkIsAuthenticated()) {
+            $this->getMenu()->addItem('Logout', 'redirect(\'?logout=1\')', 100);
+        }
     }
 
-    public function renderLayout($section, $context = array()) {
+    public function displayAuthenticationForm()
+    {
+        $this->renderLayout('login');
+    }
 
+    public function renderLayout($section, $context = array())
+    {
         extract($context, EXTR_SKIP);
 
-        $contentFile = 'template' . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . $section . '.php';
+        $contentFile = 'template' . DIRECTORY_SEPARATOR . $section . '.php';
 
-        require_once('template' . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'layout.php');
+        require_once('template' . DIRECTORY_SEPARATOR . 'layout.php');
+    }
+
+    public function getMenu() {
+        if(!$this->_menu) {
+            $this->_menu = new Menu();
+        }
+
+        return $this->_menu;
     }
 }

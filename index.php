@@ -27,4 +27,6 @@
 require_once('includes' . DIRECTORY_SEPARATOR . 'config.php');
 require_once('includes' . DIRECTORY_SEPARATOR . 'functions.php');
 
-Dispatcher::dispatch('quiz');
+$controller = isset($_REQUEST['controller']) ? $_REQUEST['controller'] : 'quiz';
+
+Dispatcher::dispatch($controller);

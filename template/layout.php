@@ -35,14 +35,41 @@
     <link rel="shortcut icon" href="images/favicon.ico"/>
     <link rel="stylesheet" type="text/css" href="css/frontend.css"/>
     <link rel="stylesheet" type="text/css" href="css/common.css"/>
+    <script type="text/javascript" src="js/frontend.js"></script>
 </head>
 <body>
 <div id="content">
     <div id="header">
-        <div id="header-container">
-            <h1><img src="images/header-image.png"><?php echo TITLE; ?></h1>
+        <?php if($this->getMenu()->count()) : ?>
+            <div id="menu-icon" class="menu-icon-closed" onclick="Menu.toggle();">&nbsp;</div>
+        <?php endif; ?>
+        <div id="header-container" style="vertical-align: middle;">
+            <img src="images/header-image.png" style="width: 30px;"><span><?php echo TITLE; ?></span>
         </div>
     </div>
+    <?php if($this->getMenu()->count()) : ?>
+        <div id="side-menu">
+            <?php
+            foreach ($this->getMenu()->getItems() as $item) :
+                if (is_object($item['name'])) :
+                    echo '<ul>';
+                    foreach ($item['name']->getItems() as $subItem) :
+                        $this->renderSlice('menu_item', array(
+                            'tag' => 'li',
+                            'item' => $subItem
+                        ));
+                    endforeach;
+                    echo '</ul>';
+                else :
+                    $this->renderSlice('menu_item', array(
+                        'tag' => 'div',
+                        'item' => $item
+                    ));
+                endif;
+            endforeach;
+            ?>
+        </div>
+    <?php endif; ?>
     <div id="body">
         <?php include($contentFile); ?>
     </div>

@@ -24,30 +24,30 @@
  *
  */
 
-abstract class AbstractAdminController extends AbstractController {
+class Menu
+{
 
-    protected function isRestricted () {
-        return true;
+    protected $_menuItems = array();
+
+    public function getItems()
+    {
+        ksort($this->_menuItems);
+        return $this->_menuItems;
     }
 
-    protected function getAuthenticator() {
-        if(!$this->_authenticator) {
-            $this->_authenticator = new AdminAuthentication();
+    public function addItem($name, $callback = false, $ord = false)
+    {
+        $item = array('name' => $name, 'callback' => $callback);
+
+        if ($ord !== false) {
+            $this->_menuItems[$ord] = $item;
+        } else {
+            $this->_menuItems[] = $item;
         }
-
-        return $this->_authenticator;
     }
 
-    public function displayAuthenticationForm() {
-        $this->renderLayout('..' . DIRECTORY_SEPARATOR . 'login', array('withoutMenu' => true));
-    }
-
-    public function renderLayout($section, $context = array()) {
-
-        extract($context, EXTR_SKIP);
-
-        $contentFile = 'template' . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . $section . '.php';
-
-        require_once('template' . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'layout.php');
+    public function count()
+    {
+        return count($this->_menuItems);
     }
 }

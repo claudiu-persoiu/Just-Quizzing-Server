@@ -13,18 +13,16 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
  * Just quizzing is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
  * You should have received a copy of the GNU General Public License
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
-class DatabaseEntity {
+class DatabaseEntity
+{
 
     static protected $_resource;
 
@@ -32,16 +30,24 @@ class DatabaseEntity {
 
     protected $_entity;
 
-    public static function getEntity($entity) {
+    /**
+     * DatabaseEntity factory
+     *
+     * @param $entity
+     * @return DatabaseEntity
+     */
+    public static function getEntity($entity)
+    {
 
-        if(!isset(self::$_entities[$entity])) {
+        if (!isset(self::$_entities[$entity])) {
             self::$_entities[$entity] = new self($entity);
         }
 
         return self::$_entities[$entity];
     }
 
-    public function __construct($entity) {
+    public function __construct($entity)
+    {
         if (!$entity) {
             throw new Exception('no entity specified');
         }
@@ -49,38 +55,43 @@ class DatabaseEntity {
         $this->_entity = $entity;
     }
 
-    public static function getResource() {
-        if(!self::$_resource) {
+    public static function getResource()
+    {
+        if (!self::$_resource) {
             self::$_resource = new SQLite3('data/db.info');
             self::$_resource->exec("PRAGMA journal_mode = MEMORY;
                        PRAGMA temp_store   = MEMORY;
+                       PRAGMA foreign_keys = ON;
                        PRAGMA encoding     = 'UTF-8';");
         }
 
         return self::$_resource;
     }
 
-    public function getAll(array $fieldsArray = array(), array $conditions = array()) {
+    public function getAll(array $fieldsArray = array(), array $conditions = array(), $orderBy = false)
+    {
 
-        if(count($fieldsArray)) {
+        if (count($fieldsArray)) {
             $fieldsString = implode(', ', $fieldsArray);
         } else {
             $fieldsString = '*';
         }
 
-        return $this->executeSelect($fieldsString, $conditions);
+        return $this->executeSelect($fieldsString, $conditions, $orderBy);
     }
 
-    public function getOne(array $fieldsArray = array(), array $conditions = array()) {
+    public function getOne(array $fieldsArray = array(), array $conditions = array())
+    {
 
         $result = $this->getAll($fieldsArray, $conditions);
 
         return $result[0];
     }
 
-    public function insert(array $fields) {
+    public function insert(array $fields)
+    {
 
-        if(count($fields) == 0) {
+        if (count($fields) == 0) {
             return false;
         }
 
@@ -106,9 +117,10 @@ class DatabaseEntity {
         return $this->execute($stmt);
     }
 
-    public function update(array $fields, array $conditions) {
+    public function update(array $fields, array $conditions)
+    {
 
-        if(count($fields) == 0) {
+        if (count($fields) == 0) {
             return false;
         }
 
@@ -138,11 +150,11 @@ class DatabaseEntity {
         return $this->execute($stmt);
     }
 
-    protected function executeSelect($fieldsString, $conditions, $limit = false) {
-
+    protected function executeSelect($fieldsString, $conditions, $orderBy = false, $limit = false)
+    {
         $conditionsWhere = $this->conditionsArrayToString($conditions);
 
-        $stmt = self::getResource()->prepare('SELECT ' . $fieldsString . ' FROM ' . $this->_entity . $conditionsWhere . $this->getLimit($limit));
+        $stmt = self::getResource()->prepare('SELECT ' . $fieldsString . ' FROM ' . $this->_entity . $conditionsWhere . $this->getOrderBy($orderBy) . $this->getLimit($limit));
 
         foreach ($conditions as $field => $value) {
             $stmt->bindValue(':c' . $field, $value);
@@ -152,18 +164,31 @@ class DatabaseEntity {
 
         $resultValues = array();
 
-        while($row = $result->fetchArray(SQLITE3_ASSOC)) {
+        while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
             $resultValues[] = $row;
         }
 
         return $resultValues;
     }
 
-    public function delete(array $conditions = array(), $limit = false) {
+    protected function getOrderBy($orderBy)
+    {
+        $result = '';
+
+        if ($orderBy) {
+            $result = ' ORDER BY ' . $orderBy . ' ';
+        }
+
+        return $result;
+    }
+
+    public function delete(array $conditions = array(), $limit = false)
+    {
 
         $conditionsWhere = $this->conditionsArrayToString($conditions);
 
-        $stmt = self::getResource()->prepare('DELETE FROM ' . $this->_entity . $conditionsWhere . $this->getLimit($limit));
+        $stmt = self::getResource()->prepare('DELETE FROM ' . $this->_entity . $conditionsWhere .
+            $this->getLimit($limit));
 
         foreach ($conditions as $field => $value) {
             $stmt->bindValue(':c' . $field, $value);
@@ -172,13 +197,14 @@ class DatabaseEntity {
         return $this->execute($stmt);
     }
 
-    protected function getLimit($limit) {
+    protected function getLimit($limit)
+    {
 
         $result = '';
-        if($limit !== false) {
+        if ($limit !== false) {
             if (gettype($limit) == 'integer') {
                 $result .= ' LIMIT ' . (int)$limit;
-            } else if(gettype($limit) == 'array') {
+            } else if (gettype($limit) == 'array') {
                 $result .= ' LIMIT ' . $limit[0] . ', ' . $limit[1];
             }
         }
@@ -186,9 +212,10 @@ class DatabaseEntity {
         return $result;
     }
 
-    protected function conditionsArrayToString($conditions) {
+    protected function conditionsArrayToString($conditions)
+    {
 
-        if(count($conditions) == 0) {
+        if (count($conditions) == 0) {
             return '';
         }
 
@@ -201,15 +228,17 @@ class DatabaseEntity {
         return substr($conditionsWhere, 0, -3);
     }
 
-    public function lastInsertRowid() {
+    public function lastInsertRowid()
+    {
 
         return $this->getResource()->lastInsertRowid();
     }
 
-    protected function execute(SQLite3Stmt $stmt) {
+    protected function execute(SQLite3Stmt $stmt)
+    {
         $result = $stmt->execute();
 
-        if(!$result) {
+        if (!$result) {
             throw new Exception('There was a problem performing this operation!');
         }
 

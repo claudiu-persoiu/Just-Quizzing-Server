@@ -13,19 +13,24 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
  * Just quizzing is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
  * You should have received a copy of the GNU General Public License
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
 ?>
-<p id="question"></p>
+<div id="header-addition">
+    <div id="questions"></div>
+    <div id="timer">0:00:00</div>
+    <div id="category-name"></div>
+
+</div>
+
+<div id="question"></div>
 <div id="answers"></div>
 
 <div id="controls">
@@ -42,24 +47,26 @@
 </div>
 <div id="final-results">
     <div class="overlay"></div>
-    <div id="result-board" class="font-larder">
+    <div class="font-larger overlay-container">
         <div id="container">
-            <div class="font-larder" id='results'>Results</div>
+            <div class="font-larger" id='results'>Results</div>
             <div>Correct: <span id="good-final-result"></span></div>
             <div>Wrong: <span id="bad-final-result"></span></div>
             <div>Skipped: <span id="skipped-final-result"></span></div>
             <div id="results-timer">Time: <span id="timer-result"></span></div>
             <div>
-                <button onclick="startQuiz();" id="restart">Restart</button>
+                <button onclick="startQuiz(categoryId, categoryName);" id="restart">Restart</button>
             </div>
         </div>
-
     </div>
 </div>
 
-<div id="header-addition">
-    <div id="timer">0:00:00</div>
-    <div id="questions"></div>
+<div id="qr-container" style="display: none;" onclick="this.style.display='none';">
+    <div class="overlay"></div>
+    <div class="overlay-container">
+        <img id="qr-img">
+    </div>
+
 </div>
 
 <script type="text/javascript">
@@ -77,18 +84,6 @@ Array.prototype.shuffle = function () {
     }
     return this;
 };
-
-(function () {
-    var headerContainer = document.getElementById('header-container');
-
-    headerContainer.insertBefore(
-        document.getElementById('questions'), headerContainer.firstChild
-    );
-
-    headerContainer.insertBefore(
-        document.getElementById('timer'), headerContainer.firstChild
-    );
-})();
 
 /**
  * Clone JS objects or array
@@ -138,6 +133,8 @@ var correct_answers,
     results_container = document.getElementById('final-results'),
 // questions container
     questions_container = document.getElementById('questions'),
+// category name container
+    category_name_container = document.getElementById('category-name'),
 // question container
     question_container = document.getElementById('question'),
 // answers container
@@ -156,19 +153,37 @@ var correct_answers,
     stats_correct_bar_container = document.getElementById('good-result'),
 // stats with wrong results bar
     stats_wrong_bar_container = document.getElementById('bad-result'),
+// controls container
+    controls_container = document.getElementById('controls'),
 // interval timer
     timer,
 // questions json object
-    json_arr;
+    json_arr,
+// current categoryId filter
+    categoryId = false,
+// category name
+    categoryName = '';
 
 /**
  * Start quiz
  *
  * @returns {boolean}
  */
-var startQuiz = function () {
+var startQuiz = function (categoryIdParam, categoryNameParam) {
+
     // clone the original json object
     json_arr = clone(json_base_arr);
+    categoryId = false;
+    categoryName = '';
+
+    if (categoryIdParam) {
+        categoryId = categoryIdParam;
+        categoryName = categoryNameParam;
+        // get the questions from a particular categoryId
+        json_arr = filterCategory(json_arr, categoryId);
+    }
+
+    category_name_container.innerHTML = categoryName;
 
     // get the length of the json object
     initial_length = json_arr.length;
@@ -186,24 +201,8 @@ var startQuiz = function () {
     // reset the time
     time = 0;
 
-    // set the interval to update the time
-    timer = setInterval(function () {
-        time++;
-
-        var hours = Math.floor(time / 3600);
-        var minutes = Math.floor(time / 60) - hours * 60;
-        var seconds = time - minutes * 60 - hours * 3600;
-
-        if (minutes < 10) {
-            minutes = '0' + minutes;
-        }
-
-        if (seconds < 10) {
-            seconds = '0' + seconds;
-        }
-
-        timer_container.innerHTML = hours + ':' + minutes + ':' + seconds;
-    }, 1000);
+    clearInterval(timer);
+    displayTime(time);
 
     // in case of a restart hide the result stats
     results_container.style.display = 'none';
@@ -211,11 +210,79 @@ var startQuiz = function () {
     // hide results stats because there isn't any answer at this point
     stats_container.style.display = 'none';
 
+    // hide empty quiz
+    if (initial_length == 0) {
+        updateQuestionCounter();
+        hideQuiz();
+        return;
+    }
+
+    // set the interval to update the time
+    timer = setInterval(function () {
+        time++;
+
+        displayTime(time);
+    }, 1000);
+
+    // show quiz form in case the previously there was an empty quiz
+    showQuiz();
+
     // get the first question
     getQuestion();
 
     return true;
+}
 
+/**
+ * Hide quiz if quiz is empty
+ *
+ */
+var hideQuiz = function () {
+    question_container.style.display = 'none';
+    answers_container.style.display = 'none';
+    controls_container.style.display = 'none';
+}
+
+/**
+ * Show quiz
+ *
+ */
+var showQuiz = function () {
+    question_container.style.display = 'block';
+    answers_container.style.display = 'block';
+    controls_container.style.display = 'block';
+}
+
+/**
+ * Filter questions by category
+ *
+ */
+var filterCategory = function (questions, category) {
+
+    return questions.filter(function (question) {
+        return question.relations.indexOf(category) !== -1;
+    });
+}
+
+/**
+ * Update timer label
+ *
+ */
+var displayTime = function (time) {
+
+    var hours = Math.floor(time / 3600);
+    var minutes = Math.floor(time / 60) - hours * 60;
+    var seconds = time - minutes * 60 - hours * 3600;
+
+    if (minutes < 10) {
+        minutes = '0' + minutes;
+    }
+
+    if (seconds < 10) {
+        seconds = '0' + seconds;
+    }
+
+    timer_container.innerHTML = hours + ':' + minutes + ':' + seconds;
 }
 
 /**
@@ -227,7 +294,7 @@ var getQuestion = function () {
 
     current = json_arr.pop();
 
-    questions_container.innerHTML = (initial_length - json_arr.length) + '/' + initial_length;
+    updateQuestionCounter();
 
     if (!current) {
         return stopGame();
@@ -235,13 +302,13 @@ var getQuestion = function () {
 
     var img = '';
 
-    if (current.img) {
-        img = '<br /><img src="data/<?php echo QUESTION_IMAGE; ?>/' + current.img + '" width=100% />';
+    if (current.data.img) {
+        img = '<br /><img src="data/<?php echo QUESTION_IMAGE; ?>/' + current.data.img + '" width=100% />';
     }
 
-    question_container.innerHTML = current.question + img;
+    question_container.innerHTML = current.data.question + img;
 
-    var answers = current.ans.shuffle();
+    var answers = current.data.ans.shuffle();
 
     answers_container.innerHTML = '';
 
@@ -249,7 +316,7 @@ var getQuestion = function () {
     answer_type = 'simple';
     for (var i = 0; i < answers.length; i++) {
 
-        if (answers[i].corect === 'true') {
+        if (answers[i].correct === 'true') {
             correct++;
         }
 
@@ -264,6 +331,10 @@ var getQuestion = function () {
     check_container.style.display = '';
     next_container.style.display = 'none';
 };
+
+var updateQuestionCounter = function () {
+    questions_container.innerHTML = (initial_length - json_arr.length) + '/' + initial_length;
+}
 
 /**
  * Stop game if there aren't any more questions, see getQuestion
@@ -320,7 +391,7 @@ var selectItem = function (id) {
 
     if (answer_type == 'simple') {
 
-        for (var i = 0; i < current.ans.length; i++) {
+        for (var i = 0; i < current.data.ans.length; i++) {
             document.getElementById('ap' + i).className = '';
             document.getElementById('a' + i).value = '';
         }
@@ -351,19 +422,19 @@ var checkAnswers = function () {
     }
 
     var correct = true;
-    var answers = current.ans;
+    var answers = current.data.ans;
 
     for (var i = 0; i < answers.length; i++) {
 
         var p = document.getElementById('ap' + i);
         var input = document.getElementById('a' + i);
 
-        if (input.value == 'true' && answers[i]['corect'] == 'true') {
+        if (input.value == 'true' && answers[i]['correct'] == 'true') {
             p.className = 'selected_correct';
-        } else if (input.value == 'true' && answers[i]['corect'] !== 'true') {
+        } else if (input.value == 'true' && answers[i]['correct'] !== 'true') {
             corent = false;
             p.className = 'error';
-        } else if (input.value == '' && answers[i]['corect'] == 'true') {
+        } else if (input.value == '' && answers[i]['correct'] == 'true') {
             correct = false;
             p.className = 'correct';
         }
@@ -412,7 +483,28 @@ var updatePercent = function () {
     stats_wrong_bar_container.style.width = (86 - proc) + '%';
 }
 
+/**
+ * Display QR Code for mobile app import
+ */
+var displayQr = function () {
+    document.getElementById('qr-container').style.display = '';
+
+    var url = document.location.href;
+
+    // filter parameters
+    url = url.replace("index.php", "");
+    if (url.indexOf("?") != -1) {
+        url = url.substring(0, url.indexOf("?"));
+    }
+    url = encodeURIComponent(url);
+
+
+    document.getElementById('qr-img').src = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + url;
+};
+
 // on window load start the quiz
-window.onload = startQuiz;
+window.onload = function () {
+    startQuiz();
+}
 
 </script>

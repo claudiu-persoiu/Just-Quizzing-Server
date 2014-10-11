@@ -28,7 +28,7 @@ class AdminQuestions extends AbstractAdminController
 
     public function indexAction()
     {
-        $this->renderLayout('questions');
+        $this->renderLayout('questions', array('key' => false));
     }
 
     protected function getEntity()
@@ -65,12 +65,29 @@ class AdminQuestions extends AbstractAdminController
 
             $this->setImage($questionsEntity, $key, $elem);
 
+            $this->setCategories($key);
+
         } catch (Exception $e) {
             MessageHelper::set($e->getMessage());
         }
 
         $this->redirect();
 
+    }
+
+    protected function setCategories($key)
+    {
+        $entity = DatabaseEntity::getEntity('category_question');
+
+        $entity->delete(array('question_id' => $key));
+
+        if (!isset($_POST['categories']) || !is_array($_POST['categories'])) {
+            return;
+        }
+
+        foreach ($_POST['categories'] as $categoryId) {
+            $entity->insert(array('category_id' => $categoryId, 'question_id' => $key));
+        }
     }
 
     protected function setAnswers(stdClass $element)
@@ -81,7 +98,7 @@ class AdminQuestions extends AbstractAdminController
             if ($_POST['q' . $i]) {
                 $ans = new stdClass();
                 $ans->text = htmlspecialchars($_POST['q' . $i]);
-                $ans->corect = isset($_POST['a' . $i]) ? $_POST['a' . $i] : null;
+                $ans->correct = isset($_POST['a' . $i]) ? $_POST['a' . $i] : null;
 
                 $element->ans[] = $ans;
             }
@@ -148,6 +165,22 @@ class AdminQuestions extends AbstractAdminController
         $result = $this->getEntity()->getOne(array(), array('id' => $key));
 
         $this->renderLayout('questions', array('key' => $key, 'data' => json_decode($result['question'])));
+    }
+
+    protected function getSelectedCategoriesArray($key)
+    {
+
+        $entity = DatabaseEntity::getEntity('category_question');
+
+        $categoryIds = $entity->getAll(array('category_id'), array('question_id' => $key));
+
+        $result = array();
+
+        foreach ($categoryIds as $categoryId) {
+            $result[] = $categoryId['category_id'];
+        }
+
+        return $result;
     }
 
 }
