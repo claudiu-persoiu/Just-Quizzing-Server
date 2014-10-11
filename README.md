@@ -5,9 +5,9 @@ A simple and minimalistic quiz platform created in PHP and SQLite
 Requirements
 ------------
 
-- PHP 5.1.2
+- PHP 5.1.2+
 - SQLite3
-- a web server (Apache/Nginx/IIS)
+- a web server (Apache/Nginx/IIS/etc.)
 
 Installation
 ------------
