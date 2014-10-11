@@ -12,7 +12,7 @@ Requirements
 Installation
 ------------
 
-- Copy the files to the server public directory (usually *www* or *htdocs*);
+- Copy the files to the server public folder (usually *www* or *htdocs*);
 - Make sure the web server have write permissions to db.info file and questions-img folder;
 - Run *yourdomain/admin.php*, with user "admin" and password "admin" (without quotes);
 - Delete *upgrade-db.php*
@@ -22,7 +22,7 @@ Upgrade
 
 - Backup the *data* folder in a safe location;
 - Overwrite the files with the new version;
-- Copy the data folder back in the directory and overwrite with your saved files;
+- Copy the data folder back in the quiz and overwrite with your saved files;
 - Make sure the web server have write permissions to *db.info* file and *questions-img* folder;
 - Open *yourdomain/update-db.php* to update the database, if there aren't any issues you should see *Update complete*;
 - After the script has run successfully delete *update-db.php*.
