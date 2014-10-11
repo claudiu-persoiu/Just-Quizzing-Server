@@ -25,7 +25,7 @@ Upgrade
 - Copy the data folder back in the quiz and overwrite with your saved files;
 - Make sure the web server have write permissions to *db.info* file and *questions-img* folder;
 - Open *yourdomain/update-db.php* to update the database, if there aren't any issues you should see *Update complete*;
-- After the script has run successfully delete *update-db.php*.
+- After the update has run successfully delete *update-db.php*.
 
 Debug
 -----
