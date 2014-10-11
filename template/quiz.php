@@ -65,8 +65,12 @@
     <div class="overlay"></div>
     <div class="overlay-container">
         <img id="qr-img">
+        <div>
+            <a href="https://play.google.com/store/apps/details?id=ro.claudiupersoiu.just.quizzing" target="_blank">
+                <img src="images/google_play.png" />
+            </a>
+        </div>
     </div>
-
 </div>
 
 <script type="text/javascript">
