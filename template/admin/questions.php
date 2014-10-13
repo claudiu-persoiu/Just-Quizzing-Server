@@ -216,7 +216,7 @@
         <tr <?php if($i % 2) { echo 'class="alternate"'; } ?>>
             <td class="identifier"><strong><?php echo $i; ?></strong></td>
             <td>
-                <div><?php echo $data->question; ?></div>
+                <div><?php echo pre($data->question); ?></div>
                 <div style="padding-top: 12px;">
                     <?php
                     $j = 0;

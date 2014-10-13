@@ -32,6 +32,10 @@ function getQuestionImageFolder() {
     return 'data' . DIRECTORY_SEPARATOR . QUESTION_IMAGE . DIRECTORY_SEPARATOR;
 }
 
+function pre($text) {
+    return nl2br(str_replace(' ', '&nbsp;', $text));
+}
+
 function classAutoloader($class) {
     require_once 'includes' . DIRECTORY_SEPARATOR . 'class' . DIRECTORY_SEPARATOR . $class . '.php';
 }

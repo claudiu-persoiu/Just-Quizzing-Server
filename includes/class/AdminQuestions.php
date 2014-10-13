@@ -46,7 +46,7 @@ class AdminQuestions extends AbstractAdminController
         $key = (int)$_POST['key'];
 
         $elem = new stdClass();
-        $elem->question = nl2br(htmlspecialchars($_POST['question']));
+        $elem->question = htmlspecialchars($_POST['question']);
 
         $this->setAnswers($elem);
 
