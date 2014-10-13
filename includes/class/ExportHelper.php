@@ -13,18 +13,16 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
  * Just quizzing is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
  * You should have received a copy of the GNU General Public License
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
-class ExportHelper {
+class ExportHelper
+{
 
     public static function export()
     {
@@ -32,7 +30,7 @@ class ExportHelper {
 
         $categoriesRelations = array();
 
-        foreach($categories as $key => $category) {
+        foreach ($categories as $key => $category) {
             $categoriesRelations[$category['id']] = $key;
         }
 
@@ -44,21 +42,23 @@ class ExportHelper {
         return json_encode($json);
     }
 
-    protected static function exportCategories($categories) {
+    protected static function exportCategories($categories)
+    {
 
         $categoriesExport = array();
 
-        foreach($categories as $i => $category) {
+        foreach ($categories as $i => $category) {
             $categoriesExport['c' . $i] = array(
                 'name' => $category['name'],
-                'ord'  => $category['ord']
+                'ord' => $category['ord']
             );
         }
 
-        return $categoriesExport;
+        return count($categoriesExport) == 0 ? new stdClass() : $categoriesExport;
     }
 
-    protected static function exportQuestions($categoriesRelations) {
+    protected static function exportQuestions($categoriesRelations)
+    {
 
         $entityQuestions = DatabaseEntity::getEntity('questions');
 
@@ -72,7 +72,8 @@ class ExportHelper {
         return $questions;
     }
 
-    protected static function exportElement($question, $categoriesRelations) {
+    protected static function exportElement($question, $categoriesRelations)
+    {
 
         $questionData = json_decode($question['question'], true);
 
@@ -104,7 +105,7 @@ class ExportHelper {
 
         $result = array();
 
-        foreach($relationIds as $relation) {
+        foreach ($relationIds as $relation) {
             $result[] = $categories[$relation['category_id']];
         }
 
