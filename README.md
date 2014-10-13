@@ -42,7 +42,7 @@ Update
 
 - follow the steps from instalation but don't copy data/db.info or data/questions-img/, these are your local information
 
-Project URL
+Project Page
 -----------
 http://blog.claudiupersoiu.ro/just-quizzing/
 
