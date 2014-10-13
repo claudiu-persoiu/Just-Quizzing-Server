@@ -103,7 +103,9 @@
     <tbody  id="processing-container">
     <tr>
         <td class="label" style="width: 50%">Input data</td>
-        <td class="label">Input script (content - string, questions - array, answers - array)</td>
+        <td class="label">Input script:<br />
+            - Input: (content - string)<br />
+            - Output: (question - string, questions - array ["Q1", "Q2",...], answers - array [false, true, false,...])</td>
     </tr>
     <tr>
         <td>
@@ -124,12 +126,20 @@
 
 
 <script type="text/javascript">
+
+    var processFunction = document.getElementById('process-function');
+
+    if (localStorage.processFunction) {
+        processFunction.value = localStorage.processFunction;
+    }
+
     function process() {
         var content = document.getElementById('unprocessed').value;
 
-        var questions, answers;
+        var questions, answers, question;
 
-        eval(document.getElementById('process-function').value);
+        localStorage.processFunction = processFunction.value;
+        eval(processFunction.value);
 
         if(typeof questions != 'undefined' && questions.length) {
             for(var i = 0; i<questions.length; i++) {
@@ -143,6 +153,10 @@
                     document.getElementById('a' + i).checked = true;
                 }
             }
+        }
+
+        if(typeof question != 'undefined' && question.length) {
+            document.getElementById('question').value = question;
         }
 
         return false;
