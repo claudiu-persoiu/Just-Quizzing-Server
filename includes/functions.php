@@ -33,7 +33,7 @@ function getQuestionImageFolder() {
 }
 
 function pre($text) {
-    return nl2br(str_replace(' ', '&nbsp;', $text));
+    return nl2br(preg_replace('/^ +/m','&nbsp;',$text));
 }
 
 function classAutoloader($class) {
