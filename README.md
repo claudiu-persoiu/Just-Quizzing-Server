@@ -36,12 +36,6 @@ If you see a black screen you can try to modify:
 
 inside *includes/config.php*.
 
-
-Update
-------
-
-- follow the steps from instalation but don't copy data/db.info or data/questions-img/, these are your local information
-
 Project Page
 -----------
 http://blog.claudiupersoiu.ro/just-quizzing/
