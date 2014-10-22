@@ -297,6 +297,17 @@ Full-Width Styles
   padding: 50px 10px 30px 10px;
 }
 
+#header_wrap h1 img {
+  vertical-align: middle;
+  border: 0;
+
+  box-shadow: 0 0 0;
+  -webkit-box-shadow: 0 0 0;
+  -moz-box-shadow: 0 0 0;
+  -o-box-shadow: 0 0 0;
+  -ms-box-shadow: 0 0 0;
+}
+
 #project_title {
   margin: 0;
   color: #fff;
