@@ -1,0 +1,5 @@
+<FilesMatch "\.(?:info)$">
+Order allow,deny
+Deny from all
+</FilesMatch>
+Options -Indexes

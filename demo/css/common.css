@@ -1,0 +1,45 @@
+
+.login {
+    text-align: center;
+    padding-top: 150px;
+}
+
+.login div {
+    margin: 10px;
+}
+
+.login input {
+    width: 200px;
+    height: 20px;
+}
+
+.login input[type=submit] {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background-color: #6cbcda;
+    border: 1px solid #427d93;
+    color: white;
+    font-size: medium;
+    width: 200px;
+    height: 30px;
+    border-radius: 15px;
+}
+
+.login input[type=submit]:active {
+    background-color: #519cb8;
+}
+
+#footer {
+    position: absolute; bottom: 0px; height: 45px; vertical-align: bottom; line-height: 45px; text-align: center;
+    background: #eee;
+    border-top: #bbb 1px solid;
+    border-bottom: #222 6px solid;
+    width: 100%;
+    font-size: smaller;
+    opacity: 0.8;
+    font-style: italic;
+}
+
+#footer a {
+    color: #000000; text-decoration: none; font-weight: bold;
+}

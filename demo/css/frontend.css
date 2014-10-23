@@ -1,0 +1,358 @@
+html {
+    min-height: 100%;
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+    height: 100%;
+    font: bold Helvetica;
+
+    margin:0;
+    padding:0;
+    font-family: 'Lucida Grande', 'Lucida Sans Unicode', Helvetica, Arial, sans-serif;
+}
+
+#answers {
+    width: 100%;
+}
+
+#answers p {
+    background-color: #efefef;
+    border: 1px solid #cccccc;
+    cursor: pointer;
+    background-position: left center;
+    background-size: 17px 17px;
+    -webkit-background-size: 17px 17px;
+    -o-background-size: 17px 17px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    background-clip: padding-box;
+}
+
+#answers p span {
+    margin-left: 20px;
+    display: block;
+    padding: 10px 0;
+}
+
+#controls button {
+    width: 50%;
+    font-size: large;
+    text-align: center;
+    -webkit-border-radius: 18px;
+    border-radius: 18px;
+    background-clip: padding-box;
+    border: 1px solid #427d93;
+    padding: 8px 0;
+    color: white;
+    float: left;
+    margin-right: 1%;
+
+    background-color: #6cbcda;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#6cbcda), to(#519cb8));
+    background-image: -webkit-linear-gradient(top, #6cbcda, #519cb8);
+    background-image:    -moz-linear-gradient(top, #6cbcda, #519cb8);
+    background-image:      -o-linear-gradient(top, #6cbcda, #519cb8);
+    background-image:         linear-gradient(to bottom, #6cbcda, #519cb8);
+    outline: none;
+}
+
+#controls button:active, #controls button:active:focus {
+    background-color: #519cb8;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#519cb8), to(#6cbcda));
+    background-image: -webkit-linear-gradient(top, #519cb8, #6cbcda);
+    background-image:    -moz-linear-gradient(top, #519cb8, #6cbcda);
+    background-image:      -o-linear-gradient(top, #519cb8, #6cbcda);
+    background-image:         linear-gradient(to bottom, #519cb8, #6cbcda);
+}
+
+#controls button:hover {
+    background-color: #519cb8;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#306f86), to(#4d91ab));
+    background-image: -webkit-linear-gradient(top, #306f86, #4d91ab);
+    background-image:    -moz-linear-gradient(top, #306f86, #4d91ab);
+    background-image:      -o-linear-gradient(top, #306f86, #4d91ab);
+    background-image:         linear-gradient(to bottom, #306f86, #4d91ab);
+}
+
+#controls #skip {
+    width: 49%;
+    margin-right: 0;
+}
+
+#controls #next {
+    display:none;
+}
+
+#answers p.selected {
+    background-color: #666357 !important;
+    color: white;
+}
+
+#answers p.selected_correct {
+    background-color: #70BF00 !important;
+    background-image: url('../images/ok.png');
+    background-repeat: no-repeat;
+    color: white;
+
+}
+
+#answers p.error {
+    background-color: #E54B17 !important;
+    background-image: url('../images/error.png');
+    background-repeat: no-repeat;
+    color: white;
+}
+
+#answers p.correct {
+    background-color: #70BF00 !important;
+    background-image: url('../images/correct.png');
+    background-repeat: no-repeat;
+    color: white;
+}
+
+#results-stats {
+    width: 100%;
+    display: none;
+    padding-top: 15px;
+    border-spacing:0;
+    clear: both;
+}
+
+#results-stats span {
+    text-align: center;
+    float: left;
+    font-size: 12px;
+    color: white;
+    padding: 1px 0px;
+}
+
+#results-stats #good-result-no {
+    background-color: #70BF00;
+    width: 7%;
+    -moz-border-radius-bottomleft:5px;
+    -webkit-border-bottom-left-radius:5px;
+    border-bottom-left-radius:5px;
+    -moz-border-radius-topleft:5px;
+    -webkit-border-top-left-radius:5px;
+    border-top-left-radius:5px;
+}
+
+#results-stats #good-result {
+    background-color: #70BF00;
+    display: inline-block;
+}
+
+#results-stats #bad-result {
+    background-color: #E54B17;
+    display: inline-block;
+}
+
+#results-stats #bad-result-no {
+    background-color: #E54B17;
+    width: 7%;
+    -moz-border-radius-bottomright:5px;
+    -webkit-border-bottom-right-radius:5px;
+    border-bottom-right-radius:5px;
+    -moz-border-radius-topright:5px;
+    -webkit-border-top-right-radius:5px;
+    border-top-right-radius:5px;
+}
+
+#results-timer {
+    margin-bottom: 20px;
+}
+
+#timer, #questions {
+    background: repeat-x scroll 0 0 #5a5a5a;
+    border-radius: 5px 5px 5px 5px;
+    color: white;
+    letter-spacing: 1px;
+    padding: 7px;
+}
+
+#timer {
+    margin-left: 5px;
+    float: right;
+}
+
+#questions {
+    margin-right: 5px;
+    float: left;
+    text-align: center;
+}
+
+#category-name {
+    margin-left: auto; margin-right: auto; padding: 5px; font-style: italic; overflow-style: panner; overflow: hidden; white-space: nowrap;
+    font-size: larger;
+
+}
+
+#header-addition {
+    overflow: hidden;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#question {
+    font-size: larger;
+    word-wrap:break-word;
+}
+
+#question img {
+    padding-top: 20px;
+}
+
+#header {
+    border: 1px solid black;
+    padding: 7px;
+    background: #023E59;
+}
+
+#header span {
+    font-size: 20px;
+    color: #ffffff; font-weight: normal;
+    vertical-align: middle;
+}
+
+@media all and (max-width: 500px) {
+    #header span {
+        font-size: 18px;
+    }
+}
+
+#header img {
+    display: inline;
+    position: relative;
+    vertical-align: middle;
+    right: 5px;
+    padding-left: 5px;
+}
+
+#menu-icon {
+    vertical-align: middle; float: left; font-size: 20px; color: #ffffff; display: inline-block;
+    width: 35px;
+    cursor: pointer;
+    padding-right: 5px;
+}
+
+.menu-icon-closed:before, .menu-icon-open:hover:before {
+    content: "";
+    position: absolute;
+    left: 0.75em;
+    top: 0.75em;
+    width: 1em;
+    height: 0.15em;
+    background: white;
+    box-shadow:
+        0 0.35em 0 0 white,
+        0 0.7em 0 0 white;
+}
+
+.menu-icon-closed:hover:before, .menu-icon-open:before {
+    content: "";
+    position: absolute;
+    left: 0.75em;
+    top: 0.75em;
+    width: 1em;
+    height: 0.15em;
+    background: #cccccc;
+    box-shadow:
+        0 0.35em 0 0 #cccccc,
+        0 0.7em 0 0 #cccccc;
+}
+
+#side-menu {
+    background: #023E59;
+    width: auto;
+    position: absolute;
+    height: 100%;
+    z-index: 10;
+    color: #efefef;
+    min-width: 200px;
+    display: none;
+}
+
+#side-menu div, #side-menu li {
+    box-shadow: 0px 1px 0px #efefef;
+    padding: 10px 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#side-menu li {
+    list-style-type: none;
+    font-size: 15px;
+    font-weight: normal;
+    padding-left: 15px;
+}
+
+#side-menu ul {
+    padding: 0;
+    margin: 0;
+}
+
+#content {
+    min-height: 100%; position: relative; margin: 0px;
+}
+
+#header-container {
+    max-width: 900px; margin: 0 auto;
+}
+
+#final-results {
+    display: none;
+}
+
+#final-results #results {
+    padding-bottom: 10px;
+}
+
+.overlay {
+    opacity: 0.6;width: 100%; height: 100%; background-color: #fff; position: absolute; top: 0; left:0; margin-left: 0px;
+}
+
+.overlay-container {
+    position: fixed; top: 20%; width: 80%; left: 10%; text-align: center;
+}
+
+#final-results #container {
+    background: none repeat scroll 0px 0px rgb(241, 241, 241);
+    width: 100%; max-width: 500px;
+    margin: 0px auto; height: 100%;
+    border: 1px solid rgb(204, 204, 204);
+    padding: 1.5%;
+
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+    background-clip: padding-box;
+}
+
+#final-results #restart {
+    width: 100%; font-size: large;
+    background-color: #6cbcda;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#6cbcda), to(#519cb8));
+    background-image: -webkit-linear-gradient(top, #6cbcda, #519cb8);
+    background-image:    -moz-linear-gradient(top, #6cbcda, #519cb8);
+    background-image:      -o-linear-gradient(top, #6cbcda, #519cb8);
+    background-image:         linear-gradient(to bottom, #6cbcda, #519cb8);
+    -webkit-border-radius: 18px;
+    border-radius: 18px;
+    background-clip: padding-box;
+    max-width: 300px;
+    border: 1px solid #427d93;
+    padding: 8px 0;
+    color: white;
+}
+
+.font-larger {
+    font-size: larger;
+}
+
+#content #body {
+    padding: 5px 5px 110px 5px;
+    opacity: 0.9;
+    max-width: 900px;
+    margin: 0 auto;
+}
