@@ -9,6 +9,14 @@ Requirements
 - SQLite3
 - a web server (Apache/Nginx/IIS/etc.)
 
+Project Page
+-----------
+http://blog.claudiupersoiu.ro/just-quizzing/
+
+Demo
+----
+http://claudiu-persoiu.github.io/Just-Quizzing-Server/demo/
+
 Installation
 ------------
 
@@ -35,10 +43,6 @@ If you see a black screen you can try to modify:
     ini_set('display_errors', '1');
 
 inside *includes/config.php*.
-
-Project Page
------------
-http://blog.claudiupersoiu.ro/just-quizzing/
 
 ----
 
