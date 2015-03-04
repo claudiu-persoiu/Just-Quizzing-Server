@@ -64,7 +64,7 @@
 <div id="qr-container" style="display: none;" onclick="this.style.display='none';">
     <div class="overlay"></div>
     <div class="overlay-container">
-        <img id="qr-img">
+        <img id="qr-img" src="">
         <div>
             <a href="https://play.google.com/store/apps/details?id=ro.claudiupersoiu.just.quizzing" target="_blank">
                 <img src="images/google_play.png" />
@@ -77,12 +77,12 @@
 
 // Array shuffle implementation
 Array.prototype.shuffle = function () {
-    var i = this.length;
+    var i = this.length, j, tempi, tempj;
     if (i == 0) return false;
     while (--i) {
-        var j = Math.floor(Math.random() * ( i + 1 ));
-        var tempi = this[i];
-        var tempj = this[j];
+        j = Math.floor(Math.random() * ( i + 1 ));
+        tempi = this[i];
+        tempj = this[j];
         this[i] = tempj;
         this[j] = tempi;
     }
@@ -93,12 +93,14 @@ Array.prototype.shuffle = function () {
  * Clone JS objects or array
  */
 function clone(obj) {
+    var copy;
+
     // Handle the 3 simple types, and null or undefined
     if (null == obj || "object" != typeof obj) return obj;
 
     // Handle Array
     if (obj instanceof Array) {
-        var copy = [];
+        copy = [];
         for (var i = 0, len = obj.length; i < len; i++) {
             copy[i] = clone(obj[i]);
         }
@@ -107,7 +109,7 @@ function clone(obj) {
 
     // Handle Object
     if (obj instanceof Object) {
-        var copy = {};
+        copy = {};
         for (var attr in obj) {
             if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
         }
@@ -121,6 +123,8 @@ var json_base_arr = <?php echo json_encode($json); ?>;
 
 // number of correct answers
 var correct_answers,
+// current question
+    current,
 // number of incorrect answers
     incorrect_answers,
 // questions that were skipped
@@ -218,7 +222,7 @@ var startQuiz = function (categoryIdParam, categoryNameParam) {
     if (initial_length == 0) {
         updateQuestionCounter();
         hideQuiz();
-        return;
+        return false;
     }
 
     // set the interval to update the time
@@ -235,7 +239,7 @@ var startQuiz = function (categoryIdParam, categoryNameParam) {
     getQuestion();
 
     return true;
-}
+};
 
 /**
  * Hide quiz if quiz is empty
@@ -245,7 +249,7 @@ var hideQuiz = function () {
     question_container.style.display = 'none';
     answers_container.style.display = 'none';
     controls_container.style.display = 'none';
-}
+};
 
 /**
  * Show quiz
@@ -255,7 +259,7 @@ var showQuiz = function () {
     question_container.style.display = 'block';
     answers_container.style.display = 'block';
     controls_container.style.display = 'block';
-}
+};
 
 /**
  * Filter questions by category
@@ -266,7 +270,7 @@ var filterCategory = function (questions, category) {
     return questions.filter(function (question) {
         return question.relations.indexOf(category) !== -1;
     });
-}
+};
 
 /**
  * Update timer label
@@ -287,7 +291,7 @@ var displayTime = function (time) {
     }
 
     timer_container.innerHTML = hours + ':' + minutes + ':' + seconds;
-}
+};
 
 /**
  * Get a new question
@@ -338,7 +342,7 @@ var getQuestion = function () {
 
 var updateQuestionCounter = function () {
     questions_container.innerHTML = (initial_length - json_arr.length) + '/' + initial_length;
-}
+};
 
 /**
  * Stop game if there aren't any more questions, see getQuestion
@@ -356,7 +360,7 @@ var stopGame = function () {
     clearInterval(timer);
 
     return false;
-}
+};
 
 /**
  * Create answer HTML object to be inseted in the page
@@ -382,7 +386,7 @@ var createAnswerObj = function (obj) {
     p.appendChild(input);
 
     return p;
-}
+};
 
 /**
  * Select answer
@@ -412,7 +416,7 @@ var selectItem = function (id) {
         }
     }
 
-}
+};
 
 /**
  * Check if the answers selected are correct
@@ -436,7 +440,7 @@ var checkAnswers = function () {
         if (input.value == 'true' && answers[i]['correct'] == 'true') {
             p.className = 'selected_correct';
         } else if (input.value == 'true' && answers[i]['correct'] !== 'true') {
-            corent = false;
+            correct = false;
             p.className = 'error';
         } else if (input.value == '' && answers[i]['correct'] == 'true') {
             correct = false;
@@ -459,7 +463,7 @@ var checkAnswers = function () {
     }
 
     updatePercent();
-}
+};
 
 /**
  * Skip current question
@@ -467,7 +471,7 @@ var checkAnswers = function () {
 var skippQuestion = function () {
     skipped_questions++;
     getQuestion();
-}
+};
 
 /**
  * Update results stats from the bottom of the screen
@@ -485,7 +489,7 @@ var updatePercent = function () {
     var proc = Math.round((86 / (correct_answers + incorrect_answers)) * correct_answers);
     stats_correct_bar_container.style.width = proc + '%';
     stats_wrong_bar_container.style.width = (86 - proc) + '%';
-}
+};
 
 /**
  * Display QR Code for mobile app import
@@ -509,6 +513,6 @@ var displayQr = function () {
 // on window load start the quiz
 window.onload = function () {
     startQuiz();
-}
+};
 
 </script>
