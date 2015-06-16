@@ -310,10 +310,7 @@ var displayNextQuestion = function () {
         img = '<br /><img src="data/<?php echo QUESTION_IMAGE; ?>/' + current.data.img + '" width=100% />';
     }
 
-    question_container.innerHTML = current.data.question
-        .replace(/ /g, '&nbsp;')
-        .replace(/\n/g, "<br />")
-        .replace(/\S&nbsp;\S/ig, function (x) { return x.replace('&nbsp;', ' '); }) + img;
+    question_container.innerHTML = current.data.question + img;
 
     var answers = current.data.ans.shuffle();
 

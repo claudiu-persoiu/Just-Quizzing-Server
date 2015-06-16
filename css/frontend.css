@@ -197,7 +197,7 @@ body {
 
 #question {
     font-size: larger;
-    word-wrap:break-word;
+    white-space: pre-wrap;
 }
 
 #question img {
