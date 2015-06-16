@@ -35,7 +35,7 @@
 
 <div id="controls">
     <button type="submit" id="check" onclick="checkAnswers();this.blur();" onmouseup="this.blur();">check</button>
-    <button type="button" id="next" onclick="getQuestion(); this.blur();">continue</button>
+    <button type="button" id="next" onclick="displayNextQuestion(); this.blur();">continue</button>
     <button type="button" id="skip" onclick="skippQuestion();">skip</button>
 </div>
 
@@ -121,14 +121,10 @@ function clone(obj) {
 
 var json_base_arr = <?php echo json_encode($json); ?>;
 
-// number of correct answers
-var correct_answers,
 // current question
-    current,
-// number of incorrect answers
-    incorrect_answers,
-// questions that were skipped
-    skipped_questions,
+var current,
+// index of the current question
+    current_index,
 // number of seconds since the begging
     time,
 // type of current question
@@ -202,9 +198,9 @@ var startQuiz = function (categoryIdParam, categoryNameParam) {
     json_arr.shuffle();
 
     // reset the answers counter
-    correct_answers = 0;
-    incorrect_answers = 0;
-    skipped_questions = 0;
+    questionsAnswers.reset();
+
+    current_index = 0;
 
     // reset the time
     time = 0;
@@ -236,7 +232,7 @@ var startQuiz = function (categoryIdParam, categoryNameParam) {
     showQuiz();
 
     // get the first question
-    getQuestion();
+    displayNextQuestion();
 
     return true;
 };
@@ -294,19 +290,19 @@ var displayTime = function (time) {
 };
 
 /**
- * Get a new question
+ * Display next question
  *
  * @returns {boolean}
  */
-var getQuestion = function () {
+var displayNextQuestion = function () {
 
-    current = json_arr.pop();
-
-    updateQuestionCounter();
+    current = json_arr[current_index++];
 
     if (!current) {
         return stopGame();
     }
+
+    updateQuestionCounter();
 
     var img = '';
 
@@ -344,20 +340,24 @@ var getQuestion = function () {
 };
 
 var updateQuestionCounter = function () {
-    questions_container.innerHTML = (initial_length - json_arr.length) + '/' + initial_length;
+    questions_container.innerHTML = current_index + '/' + initial_length;
 };
 
 /**
- * Stop game if there aren't any more questions, see getQuestion
+ * Stop game if there aren't any more questions, see displayNextQuestion
  *
  * @returns {boolean}
  */
 var stopGame = function () {
 
+    var correct_answers = questionsAnswers.getCorrectNumber();
+    var incorrect_answers = questionsAnswers.getWrongNumber();
+    var skipped_questions = initial_length - correct_answers - incorrect_answers;
+
     results_container.style.display = 'block';
-    document.getElementById('good-final-result').innerHTML = correct_answers;
-    document.getElementById('bad-final-result').innerHTML = incorrect_answers;
-    document.getElementById('skipped-final-result').innerHTML = skipped_questions;
+    document.getElementById('good-final-result').innerHTML = correct_answers.toString();
+    document.getElementById('bad-final-result').innerHTML = incorrect_answers.toString();
+    document.getElementById('skipped-final-result').innerHTML = skipped_questions.toString();
 
     document.getElementById('timer-result').innerHTML = timer_container.innerHTML;
     clearInterval(timer);
@@ -366,7 +366,7 @@ var stopGame = function () {
 };
 
 /**
- * Create answer HTML object to be inseted in the page
+ * Create answer HTML object to be inserted in the page
  *
  * @param obj Current question object
  * @returns {HTMLElement}
@@ -457,12 +457,12 @@ var checkAnswers = function () {
 
     // if the answer is correct go to the next question, otherwise display the correct result
     if (correct == false) {
-        incorrect_answers++;
+        questionsAnswers.setWrong(current_index);
         check_container.style.display = 'none';
         next_container.style.display = 'block';
     } else {
-        correct_answers++;
-        getQuestion();
+        questionsAnswers.setCorrect(current_index);
+        displayNextQuestion();
     }
 
     updatePercent();
@@ -472,8 +472,7 @@ var checkAnswers = function () {
  * Skip current question
  */
 var skippQuestion = function () {
-    skipped_questions++;
-    getQuestion();
+    displayNextQuestion();
 };
 
 /**
@@ -481,18 +480,51 @@ var skippQuestion = function () {
  */
 var updatePercent = function () {
 
+    var correct_answers = questionsAnswers.getCorrectNumber();
+
+    var incorrect_answers = questionsAnswers.getWrongNumber();
+
     // display results stats container if it's not already displayed
     stats_container.style.display = 'block';
 
     // set number of correct/wrong answers
-    stats_correct_container.innerHTML = correct_answers;
-    stats_wrong_container.innerHTML = incorrect_answers;
+    stats_correct_container.innerHTML = correct_answers.toString();
+    stats_wrong_container.innerHTML = incorrect_answers.toString();
 
     // display the graph with results percent
     var proc = Math.round((86 / (correct_answers + incorrect_answers)) * correct_answers);
     stats_correct_bar_container.style.width = proc + '%';
     stats_wrong_bar_container.style.width = (86 - proc) + '%';
 };
+
+/**
+ * Answers manager
+ */
+var questionsAnswers = (function () {
+    var questions_result = [];
+
+    return {
+        getCorrectNumber: function () {
+            return questions_result.filter(function (x) {
+                return x == 'c';
+            }).length;
+        },
+        getWrongNumber: function () {
+            return questions_result.filter(function (x) {
+                return x == 'i';
+            }).length;
+        },
+        setCorrect: function (index) {
+            questions_result[index] = 'c';
+        },
+        setWrong: function (index) {
+            questions_result[index] = 'i';
+        },
+        reset: function () {
+            questions_result = [];
+        }
+    };
+}());
 
 /**
  * Display QR Code for mobile app import
