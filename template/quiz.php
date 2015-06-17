@@ -23,6 +23,15 @@
  */
 
 ?>
+
+<div id="pager-left" class="pager">
+    <img src="images/leftArrow.png" onclick="displayPreviousQuestion(); this.blur();" />
+</div>
+
+<div id="pager-right" class="pager">
+    <img src="images/rightArrow.png" onclick="displayNextQuestion(); this.blur();" />
+</div>
+
 <div id="header-addition">
     <div id="questions"></div>
     <div id="timer">0:00:00</div>
@@ -89,36 +98,6 @@ Array.prototype.shuffle = function () {
     return this;
 };
 
-/**
- * Clone JS objects or array
- */
-function clone(obj) {
-    var copy;
-
-    // Handle the 3 simple types, and null or undefined
-    if (null == obj || "object" != typeof obj) return obj;
-
-    // Handle Array
-    if (obj instanceof Array) {
-        copy = [];
-        for (var i = 0, len = obj.length; i < len; i++) {
-            copy[i] = clone(obj[i]);
-        }
-        return copy;
-    }
-
-    // Handle Object
-    if (obj instanceof Object) {
-        copy = {};
-        for (var attr in obj) {
-            if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
-        }
-        return copy;
-    }
-
-    throw new Error("Unable to copy obj! Its type isn't supported.");
-}
-
 var json_base_arr = <?php echo json_encode($json); ?>;
 
 // current question
@@ -175,8 +154,8 @@ var current,
  */
 var startQuiz = function (categoryIdParam, categoryNameParam) {
 
-    // clone the original json object
-    json_arr = clone(json_base_arr);
+    // clone the original json array
+    json_arr = json_base_arr.slice(0);
     categoryId = false;
     categoryName = '';
 
@@ -199,8 +178,6 @@ var startQuiz = function (categoryIdParam, categoryNameParam) {
 
     // reset the answers counter
     questionsAnswers.reset();
-
-    current_index = 0;
 
     // reset the time
     time = 0;
@@ -230,6 +207,8 @@ var startQuiz = function (categoryIdParam, categoryNameParam) {
 
     // show quiz form in case the previously there was an empty quiz
     showQuiz();
+
+    current_index = -1;
 
     // get the first question
     displayNextQuestion();
@@ -291,32 +270,66 @@ var displayTime = function (time) {
 
 /**
  * Display next question
- *
- * @returns {boolean}
  */
 var displayNextQuestion = function () {
 
-    current = json_arr[current_index++];
+    current = json_arr[current_index + 1];
 
     if (!current) {
         return stopGame();
     }
 
+    current_index++;
+
     updateQuestionCounter();
+
+    displayQuestion(current, current_index);
+};
+
+/**
+ * Display previous question
+ */
+var displayPreviousQuestion = function () {
+
+    current = json_arr[current_index - 1];
+console.log(current.data);
+    console.log(current_index);
+    if (!current) {
+        return;
+    }
+
+    current_index--;
+
+    updateQuestionCounter();
+
+    displayQuestion(current, current_index);
+};
+
+/**
+ * Display question
+ */
+var displayQuestion = function (question, index) {
 
     var img = '';
 
-    if (current.data.img) {
-        img = '<br /><img src="data/<?php echo QUESTION_IMAGE; ?>/' + current.data.img + '" width=100% />';
+    if (question.data.img) {
+        img = '<br /><img src="data/<?php echo QUESTION_IMAGE; ?>/' + question.data.img + '" width=100% />';
     }
 
-    question_container.innerHTML = current.data.question + img;
+    question_container.innerHTML = question.data.question + img;
 
-    var answers = current.data.ans.shuffle();
+    var was_answered = questionsAnswers.wasAnswered(index);
+
+    var answers = question.data.ans;
+
+    if (!was_answered) {
+        answers.shuffle();
+    }
 
     answers_container.innerHTML = '';
 
     var correct = 0;
+
     answer_type = 'simple';
     for (var i = 0; i < answers.length; i++) {
 
@@ -328,16 +341,35 @@ var displayNextQuestion = function () {
             answer_type = 'multiple';
         }
 
-        var p = createAnswerObj({'id': i, 'txt': answers[i]['text']});
+        var p = createAnswerObj({
+            'id': i,
+            'txt': answers[i]['text'],
+            'was_answered': was_answered,
+            'was_selected': answers[i].was_selected
+        });
+
         answers_container.appendChild(p);
     }
 
-    check_container.style.display = '';
-    next_container.style.display = 'none';
+    if (was_answered) {
+        check_container.style.display = 'none';
+        next_container.style.display = 'block';
+        checkAnswers(true);
+    } else {
+        check_container.style.display = '';
+        next_container.style.display = 'none';
+    }
+
+    updatePager(index);
+};
+
+var updatePager = function (index) {
+    document.getElementById('pager-left').style.display = (index == 0) ? 'none' : '';
+    document.getElementById('pager-right').style.display = (index == (initial_length - 1)) ? 'none' : '';
 };
 
 var updateQuestionCounter = function () {
-    questions_container.innerHTML = current_index + '/' + initial_length;
+    questions_container.innerHTML = (current_index + 1) + '/' + initial_length;
 };
 
 /**
@@ -371,9 +403,16 @@ var stopGame = function () {
 var createAnswerObj = function (obj) {
     var p = document.createElement('p');
     // assign select answer functionality to the new element
-    p.onclick = function () {
-        selectItem(this.id);
-    };
+    if (obj.was_answered) {
+        p.onclick = function () {
+            return false;
+        };
+    } else {
+        p.onclick = function () {
+            selectItem(this.id);
+        };
+    }
+
     p.id = 'ap' + obj.id;
 
     var span = document.createElement('span');
@@ -383,6 +422,11 @@ var createAnswerObj = function (obj) {
     var input = document.createElement('input');
     input.type = 'hidden';
     input.id = 'a' + obj.id;
+
+    if (obj.was_selected) {
+        input.value = 'true';
+        console.log(obj);
+    }
     p.appendChild(input);
 
     return p;
@@ -397,22 +441,28 @@ var selectItem = function (id) {
 
     var no = id.replace('ap', '');
 
-    if (answer_type == 'simple') {
+    console.log(current.data.ans[no]);
+    // was_selected
 
+    if (answer_type == 'simple') {
         for (var i = 0; i < current.data.ans.length; i++) {
             document.getElementById('ap' + i).className = '';
             document.getElementById('a' + i).value = '';
+            current.data.ans[i].was_selected = false;
         }
 
         document.getElementById('ap' + no).className = 'selected';
         document.getElementById('a' + no).value = 'true';
+        current.data.ans[no].was_selected = true;
     } else {
         if (document.getElementById('ap' + no).className == '') {
             document.getElementById('ap' + no).className = 'selected';
             document.getElementById('a' + no).value = 'true';
+            current.data.ans[no].was_selected = true;
         } else {
             document.getElementById('ap' + no).className = '';
             document.getElementById('a' + no).value = '';
+            current.data.ans[no].was_selected = false;
         }
     }
 
@@ -423,7 +473,7 @@ var selectItem = function (id) {
  *
  * @returns {boolean}
  */
-var checkAnswers = function () {
+var checkAnswers = function (display_only) {
 
     if (!current) {
         return false;
@@ -450,6 +500,10 @@ var checkAnswers = function () {
         p.onclick = function () {
             return false;
         };
+    }
+
+    if (display_only) {
+        return true;
     }
 
     // if the answer is correct go to the next question, otherwise display the correct result
@@ -516,6 +570,9 @@ var questionsAnswers = (function () {
         },
         setWrong: function (index) {
             questions_result[index] = 'i';
+        },
+        wasAnswered: function (index) {
+            return (index in questions_result);
         },
         reset: function () {
             questions_result = [];

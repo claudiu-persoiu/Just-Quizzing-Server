@@ -356,3 +356,18 @@ body {
     max-width: 900px;
     margin: 0 auto;
 }
+
+.pager {
+    position: fixed;
+    top: 50%;
+    margin-top: -38px;
+    cursor: pointer;
+}
+
+#pager-left {
+    left: 0;
+}
+
+#pager-right {
+    right: 0;
+}
