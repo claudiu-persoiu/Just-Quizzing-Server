@@ -38,7 +38,7 @@ Upgrade
 Debug
 -----
 
-If you see a black screen you can try to modify:
+If you see a blank screen you can try to modify:
 
     ini_set('display_errors', '1');
 
