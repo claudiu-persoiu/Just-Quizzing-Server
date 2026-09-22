@@ -11,11 +11,11 @@ Requirements
 
 Project Page
 -----------
-http://blog.claudiupersoiu.ro/just-quizzing/
+https://blog.claudiupersoiu.ro/just-quizzing/
 
 Demo
 ----
-http://claudiu-persoiu.github.io/Just-Quizzing-Server/demo/
+https://claudiu-persoiu.github.io/Just-Quizzing-Server/demo/
 
 Installation
 ------------
